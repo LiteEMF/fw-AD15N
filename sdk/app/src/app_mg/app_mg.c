@@ -33,11 +33,22 @@ void app_timer_loop(void)
 
 }
 
+#ifdef LITEEMF_ENABLED
+#include "emf.h"
+#endif
+
 int app_mg_init(APP_T app, void *param)
 {
     cur_app = app;
     app_param = param;
     app_switch_flg = 0;
+
+    #ifdef LITEEMF_ENABLED
+    emf_api_init();
+    emf_init();
+    emf_handler(100);
+    #endif
+
     return 0;
 }
 

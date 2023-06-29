@@ -1,0 +1,19 @@
+{
+	"files.associations": {
+		"Makefile": "makefile",
+		"emf_typedef.h": "c",
+		"turbo.h": "c",
+		"api_tick.h": "c",
+		"hal_typedef.h": "c",
+		"emf.h": "c",
+		"config.h": "c",
+		"includes.h": "c",
+		"typedef.h": "c",
+		"string.h": "c",
+		"sfr.h": "c",
+		"cpu.h": "c",
+		"asm_type.h": "c",
+		"tuple": "c",
+		"utility": "c"
+	}
+}

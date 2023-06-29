@@ -1,0 +1,226 @@
+# depslib dependency file v1.0
+1687760253 source:d:\work\git\github\fw-ad15n\sdk\app\bsp\cpu\sh54\clock.c
+	"config.h"
+	"hwi.h"
+	"clock.h"
+	"math.h"
+	"common.h"
+	"efuse.h"
+	"log.h"
+	"stdlib.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\config.h
+	"includes.h"
+	"common.h"
+	"errno-base.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\includes.h
+	"typedef.h"
+	"sfr.h"
+	"csfr.h"
+	"hwi.h"
+	"cpu.h"
+	"wdt.h"
+	"uart.h"
+	"jiffies.h"
+	"printf.h"
+	"string.h"
+	"gpio.h"
+
+1688033464 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\typedef.h
+	"asm_type.h"
+	"cpu.h"
+	"sfr.h"
+	"string.h"
+	"cpu.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\asm_type.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\cpu.h
+	"sfr.h"
+	"irq.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\sfr.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\irq.h
+	"hwi.h"
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\hwi.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\csfr.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\wdt.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\uart.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\jiffies.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\printf.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\gpio.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\common.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\errno-base.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\clock.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\efuse.h
+	"boot.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\boot.h
+	"asm_type.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\log.h
+	"cpu.h"
+	"typedef.h"
+	"uart.h"
+
+1687760253 source:d:\work\git\github\fw-ad15n\sdk\app\bsp\cpu\sh54\port_init.c
+	"asm/power_interface.h"
+	"asm/power/p33.h"
+	<stdlib.h>
+	"app_config.h"
+	"typedef.h"
+	"gpio.h"
+	"usb/otg.h"
+	"usb/host/usb_host.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\asm\power_interface.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\asm\power\p33.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\app\src\mcu\app_config.h
+	"usb_std_class_def.h"
+	"usb_common_def.h"
+	"usb_std_class_def.h"
+	"usb_common_def.h"
+
+1687760253 d:\work\git\github\fw-ad15n\sdk\app\bsp\common\usb\usb_std_class_def.h
+
+1687760253 d:\work\git\github\fw-ad15n\sdk\app\bsp\common\usb\usb_common_def.h
+	"app_config.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\device\usb\otg.h
+	"asm/usb.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\asm\usb.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\device\usb\host\usb_host.h
+	"dev_mg/device.h"
+	"asm/usb.h"
+	"usb/ch9.h"
+	"usb/usb_phy.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\dev_mg\device.h
+	"typedef.h"
+	"atomic.h"
+	"ioctl_cmds.h"
+	"dev_manage.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\dev_mg\atomic.h
+	"cpu.h"
+	"irq.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\dev_mg\ioctl_cmds.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\dev_mg\dev_manage.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\device\usb\ch9.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\device\usb\usb_phy.h
+	"typedef.h"
+	"asm/usb.h"
+
+1687760253 source:d:\work\git\github\fw-ad15n\sdk\app\bsp\cpu\sh54\power_api.c
+	"asm/power_interface.h"
+	"usb/host/usb_host.h"
+	"usb/otg.h"
+	"tick_timer_driver.h"
+	"asm/power/p33.h"
+	"power_api.h"
+	"gpio.h"
+	"wdt.h"
+	"app_config.h"
+	"maskrom.h"
+	"dac_cpu.h"
+	"log.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\tick_timer_driver.h
+	"config.h"
+
+1687760253 d:\work\git\github\fw-ad15n\sdk\app\bsp\cpu\sh54\power_api.h
+	"typedef.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\maskrom.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\dac_cpu.h
+
+1687760253 source:d:\work\git\github\fw-ad15n\sdk\app\bsp\cpu\sh54\uart.c
+	"config.h"
+	"clock.h"
+	"uart.h"
+	"app_config.h"
+	"gpio.h"
+
+1687760253 source:d:\work\git\github\fw-ad15n\sdk\app\bsp\lib\common.c
+	"config.h"
+	"common.h"
+	"circular_buf.h"
+	"clock.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\common\circular_buf.h
+	"typedef.h"
+
+1687760254 source:d:\work\git\github\fw-ad15n\sdk\app\src\mcu\app_config.c
+	"includes.h"
+
+1687760254 source:d:\work\git\github\fw-ad15n\sdk\app\src\mcu\init.c
+	"config.h"
+	"common.h"
+	"boot.h"
+	"msg.h"
+	"init.h"
+	"clock.h"
+	"efuse.h"
+	"efuse_trim_value.h"
+	"log.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\msg\msg.h
+	"typedef.h"
+	"uart.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\app\src\mcu\init.h
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\include_lib\cpu\sh54\efuse_trim_value.h
+	"boot.h"
+
+1687760254 source:d:\work\git\github\fw-ad15n\sdk\app\src\mcu\main.c
+	"config.h"
+	"common.h"
+	"maskrom.h"
+	"asm/power/p33.h"
+	"app_config.h"
+	"init.h"
+	"asm/power_interface.h"
+	"power_api.h"
+	"log.h"
+
+1687760254 source:d:\work\git\github\fw-ad15n\sdk\app\src\mcu\mcu_app.c
+	"cpu.h"
+	"config.h"
+	"typedef.h"
+	"errno-base.h"
+	"app_config.h"
+	"log.h"
+	"mcu_app.h"
+
+1687760254 d:\work\git\github\fw-ad15n\sdk\app\src\mcu\mcu_app.h
+
