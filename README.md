@@ -1,3 +1,21 @@
+# LiteEMF on fw-AD14N-AD15N-AC104N
+## LiteEMF适配 
+ 在原厂AD14N-AD15N sdk基础上适配了LiteEMF框架, emf_ad15n_hal/目录下是hal驱动, project/目录下为工程文件.
+
+* 目前适配了AD14N系列单片机
+* 编译只适配了Makefile编译方式, Codeblock 编译方式暂未适配
+* 只添加了框架,驱动未适配
+
+## LiteEMF快速开始
+
+* 下载项目git命令行下载 `git clone https://github.com/LiteEMF/fw-AD15N.git`
+* 更新LiteEMF子模块命令行输入: `git submodule init`  `git submodule update`
+* 安装杰里编译环境[方法](#env)
+* vscode 打开代码, vscode -- 终端 -- 运行任务 -- ad14n_LiteEMF 进行编译
+* hw_confg.h,hw_board.h文件添加或修改自己的硬件和工程
+
+
+
 # fw-AD14N-AD15N-AC104N
 About Firmware for Generic MCU SDK（AD14N-AD15N-AC104N series）, Support AD14N,AD15N,AC104N
 
@@ -14,13 +32,14 @@ AD14N-AD15N 系列通用MCU SDK 固件程序
 
 本工程提供的例子，需要结合对应命名规则的库文件(lib.a) 和对应的子仓库进行编译.
 
+
 快速开始
 ------------
 
 欢迎使用杰理开源项目，在开始进入项目之前，请详细阅读SDK 介绍文档，
 从而获得对杰理系列芯片和SDK 的大概认识，并且可以通过快速开始介绍来进行开发.
 
-工具链
+<a id="env">工具链</a>
 ------------
 
 关于如何获取`杰理工具链` 和 如何进行环境搭建，请阅读以下内容：
