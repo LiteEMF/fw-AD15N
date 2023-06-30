@@ -11,7 +11,9 @@
             "defines": [
                 "_DEBUG",
                 "UNICODE",
-                "_UNICODE"
+                "_UNICODE",
+                "LITEEMF_ENABLED",
+                "uint16_t = u16"
             ],
             "windowsSdkVersion": "10.0.19041.0",
             "compilerPath": "cl.exe",

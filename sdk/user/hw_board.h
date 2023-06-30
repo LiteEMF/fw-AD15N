@@ -26,32 +26,36 @@ extern "C" {
 
 #elif PROJECT_GAMEPAD
 	#if GAMEPAD1
-		// //timer
-		// #define HW_TIMER_MAP			{TIMER0, VAL2FLD(TIMER_FREQ,1000)|VAL2FLD(TIMER_PRI,1)}
+		// timer
+		#define HW_TIMER_MAP	{0, VAL2FLD(TIMER_FREQ,1000)|VAL2FLD(TIMER_PRI,1)}
 
-		// //uart
-		// #define HW_UART_MAP {\
-		// 	{PD_00, PIN_NULL,	0, 0, UART0, VAL2FLD(UART_BAUD,1000000)},	\
-		// 	{PC_07, PC_06, 		0, 64, UART0, VAL2FLD(UART_BAUD,1000000)|VAL2FLD(UART_PRI,1)},		\
-		// 	}
+		// uart
+		#define HW_UART_MAP {\
+			{PA_04, PIN_NULL,	0, 0, (uint32_t)JL_UT0, VAL2FLD(UART_BAUD,1000000)},	\
+			{PA_09, PIN_NULL, 	0, 64, (uint32_t)NULL, VAL2FLD(UART_BAUD,1000000)|VAL2FLD(UART_PRI,1)},		\
+			}
 
-		// //adc
-		// #define HW_ADC_MAP {	\
-		// 	{PB_00,0,VAL2FLD(ADC_CHANNEL,0)},		\
-		// 	{PA_01,0,VAL2FLD(ADC_CHANNEL,1) | VAL2FLD(ADC_PULL,1)}			\
-		// 	}
-		// //spi
+		//adc
+		#define HW_ADC_MAP {	\
+			{PA_00,0,VAL2FLD(ADC_CH,0)},								\
+			{PA_01,0,VAL2FLD(ADC_CH,1) | VAL2FLD(ADC_PULL,1)}			\
+			}
+		// iic 
+		#define HW_IIC_MAP {	\
+			{PB_00,PB_01,PB_02,'A',VAL2FLD(IIC_BADU,400000)},	\
+			}
+		// spi
 		// #define HW_SPI_HOST_MAP {\
-		// 	{PB_07,PB_05,PB_06,PB_04,SPI0,VAL2FLD(SPI_BADU,1000000)},	\
-		// 	{PC_03,PC_01,PC_02,PC_01,SPI0,VAL2FLD(SPI_BADU,1000000)},	\
+		// 	{PB_07,PB_05,PB_06,PB_04,SPI1,VAL2FLD(SPI_BADU,1000)},	\
 		// 	}
 
-		// //pwm
-		// #define HW_PWM_MAP {	\
-		// 	{PC_04,PWM1,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_ACTIVE,1)},		\
-		// 	{PC_05,PWM2,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_ACTIVE,0)}			\
-		// 	}
-
+		// pwm
+		#define HW_PWM_MAP {	\
+			{PA_04,0,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_CH,0)|VAL2FLD(PWM_ACTIVE,1)},		\
+			{PA_05,0,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_CH,1)|VAL2FLD(PWM_ACTIVE,0)},		\
+			{PA_08,0,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_CH,2)|VAL2FLD(PWM_ACTIVE,0)},		\
+			{PA_09,0,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_CH,3)|VAL2FLD(PWM_ACTIVE,0)},		\
+			}
 	#endif
 #endif
 

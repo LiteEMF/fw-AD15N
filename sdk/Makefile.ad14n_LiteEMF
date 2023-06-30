@@ -261,6 +261,7 @@ c_SRC_FILES := \
 	app/bsp/cpu/sh54/port_init.c \
 	app/bsp/cpu/sh54/port_wkup.c \
 	app/bsp/cpu/sh54/power_api.c \
+	app/bsp/cpu/sh54/iic_hw.c \
 	app/bsp/cpu/sh54/spi1.c \
 	app/bsp/cpu/sh54/uart.c \
 	app/bsp/cpu/sh54/uart_dev.c \

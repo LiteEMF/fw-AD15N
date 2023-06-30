@@ -13,6 +13,7 @@
 #ifndef _hal_spi_host_h
 #define _hal_spi_host_h
 #include "utils/emf_typedef.h" 
+#include "spi1.h"
 
 #ifdef __cplusplus
 extern "C" {

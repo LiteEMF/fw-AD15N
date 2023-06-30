@@ -13,6 +13,7 @@
 #include "log.h"
 
 //硬件IIC设备数据初始化
+#ifndef LITEEMF_ENABLED
 const struct hw_iic_config hw_iic_cfg[] = {
     {
         .port = 'A',
@@ -24,6 +25,7 @@ const struct hw_iic_config hw_iic_cfg[] = {
         .isr_en = 0
     },
 };
+#endif
 
 #define EINVAL 22
 struct iic_iomapping {

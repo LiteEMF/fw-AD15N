@@ -19,9 +19,13 @@ void register_handle_printf_putchar(int (*handle)(int a));
 #define LOG_ERROR       e
 #define LOG_CHAR        c
 
+#ifndef _STR
 #define _STR(x)     #x
-#define STR(x)     "["_STR(x)"]"
+#endif
 
+#ifndef STR
+#define STR(x)     "["_STR(x)"]"
+#endif
 
 #define _LOG_TAG_CONST_DECLARE(level, name)         extern const char log_tag_const_##level##_##name
 #define LOG_TAG_CONST_DECLARE(level, name)          _LOG_TAG_CONST_DECLARE(level, name)

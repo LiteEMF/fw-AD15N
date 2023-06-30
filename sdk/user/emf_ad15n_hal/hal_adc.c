@@ -16,10 +16,15 @@
 #include "hw_board.h"
 #ifdef HW_ADC_MAP
 #include  "api/api_adc.h"
+
+#include  "adc_drv.h"
 /******************************************************************************************************
 ** Defined
 *******************************************************************************************************/
-
+// #define HW_ADC_MAP {	\
+// 			{PA_00,0,VAL2FLD(ADC_CH,0)},								\
+// 			{PA_01,0,VAL2FLD(ADC_CH,1) | VAL2FLD(ADC_PULL,1)}			\
+// 			}
 /******************************************************************************************************
 **	static Parameters
 *******************************************************************************************************/
@@ -43,23 +48,46 @@
 *******************************************************************/
 uint16_t hal_adc_to_voltage(uint16_t adc)
 {
+    u32 adc_vbg = adc_get_value(ADC_CH_PMU_VBG08);
+    if (adc_vbg == 0) {
+        return 0;
+    }
+    return adc_value_to_voltage(adc_vbg, adc);
+
 	return 0;
 }
 bool hal_adc_value(uint8_t id, uint16_t* valp)
 {
-	return false;
+	*valp = adc_get_value(ADC_CH_ATT(id));
+	return true;
 }
 bool hal_adc_start_scan(void)
 {
-	return false;
+	return true;
 }
 bool hal_adc_init(void)
 {
-	return false;
+	uint8_t id;
+	
+	for(id=0; id<m_adc_num; id++){
+		gpio_set_die(adc_ch2port(ADC_CH_ATT(id)), 0);
+		gpio_set_direction(adc_ch2port(ADC_CH_ATT(id)), 1);
+		gpio_set_pull_down(adc_ch2port(ADC_CH_ATT(id)), 0);
+		if(ADC_PULL_ATT(id)){
+			gpio_set_pull_up(adc_ch2port(ADC_CH_ATT(id)), 0);
+		}else{
+			gpio_set_pull_up(adc_ch2port(ADC_CH_ATT(id)), 1);
+		}
+
+		adc_add_sample_ch(ADC_CH_ATT(id));
+	}
+	return true;
 }
 bool hal_adc_deinit(void)
 {
-	return false;
+	extern void adc_close();
+	adc_close();
+	return true;
 }
 
 

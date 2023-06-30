@@ -60,7 +60,11 @@ struct hw_iic_config {
     u8 isr_en;
 };
 
+#ifndef LITEEMF_ENABLED
 extern const struct hw_iic_config hw_iic_cfg[];
+#else
+extern struct hw_iic_config hw_iic_cfg[];
+#endif
 
 int  hw_iic_init(hw_iic_dev iic);
 void hw_iic_uninit(hw_iic_dev iic);

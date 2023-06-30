@@ -16,7 +16,7 @@
 #if API_WDT_ENABLE
 
 #include  "api/api_wdt.h"
-
+#include  "wdt.h"
 /******************************************************************************************************
 ** Defined
 *******************************************************************************************************/
@@ -34,15 +34,31 @@
 
 void hal_wdt_feed(void)
 {
+	wdt_clear();
 }
 
 bool hal_wdt_init(uint32_t ms)
 {
-	return false;
+	if(1000 >= ms){
+		wdt_init(WDT_1S);
+	}else if(2000 >= ms){
+		wdt_init(WDT_2S);
+	}else if(4000 >= ms){
+		wdt_init(WDT_4S);
+	}else if(8000 >= ms){
+		wdt_init(WDT_8S);
+	}else if(16000 >= ms){
+		wdt_init(WDT_16S);
+	}else{
+		wdt_init(WDT_32S);
+	}
+	wdt_enable();
+	return true;
 }
 bool hal_wdt_deinit(void)
 {
-	return false;
+	wdt_close();
+	return true;
 }
 
 

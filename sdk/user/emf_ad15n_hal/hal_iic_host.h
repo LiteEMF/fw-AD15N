@@ -13,6 +13,7 @@
 #ifndef _hal_iic_h
 #define _hal_iic_h
 #include "utils/emf_typedef.h" 
+#include "iic_hw.h" 
 
 #ifdef __cplusplus
 extern "C" {

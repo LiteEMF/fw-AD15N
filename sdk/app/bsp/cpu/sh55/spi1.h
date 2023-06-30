@@ -74,7 +74,13 @@ struct spi_platform_data {
 };
 
 extern const struct spi_platform_data spi0_p_data;
+
+#if defined LITEEMF_ENABLED && (!EXT_FLASH_EN) 
+extern struct spi_platform_data spi1_p_data;
+#else 
 extern const struct spi_platform_data spi1_p_data;
+#endif
+
 
 typedef const int spi_dev;
 

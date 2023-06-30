@@ -17,10 +17,16 @@
 #if	defined HW_TIMER_MAP && API_TIMER_BIT_ENABLE
 #include  "api/api_timer.h"
 
+#include "sfr.h"
+#include "cpu.h"
+#include "config.h"
+#include "gpio.h"
+#include "clock.h"
+
 /******************************************************************************************************
 ** Defined
 *******************************************************************************************************/
-
+// #define HW_TIMER_MAP	{0, VAL2FLD(TIMER_FREQ,1000)|VAL2FLD(TIMER_PRI,1)}
 /******************************************************************************************************
 **	static Parameters
 *******************************************************************************************************/
@@ -33,6 +39,88 @@
 **	static Function
 ******************************************************************************************************/
 
+#define TIMER_SFR(ch) JL_TMR##ch
+
+/*
+ *timer
+ * */
+#define _timer_init(ch,us)  \
+    HWI_Install(IRQ_TIME##ch##_IDX, (u32)timer##ch##_isr, 0); 	\
+	TIMER_SFR(ch)->PRD = clk_get("lsb")/1000000 * (us);			\
+	TIMER_SFR(ch)->CON = BIT(0)|BIT(6);
+
+
+
+uint8_t get_timer_id (uint8_t timer)
+{
+    uint8_t i;
+
+    for(i=0; i<m_timer_num; i++){
+        if(m_timer_map[i].peripheral == (uint32_t)timer){
+            return i;
+        }
+    }
+    return ID_NULL;
+}
+
+#if API_TIMER_BIT_ENABLE & BIT(0)
+SET(interrupt(""))
+static void timer0_isr(void)
+{
+    uint8_t id = get_timer_id(0);   
+    TIMER_SFR(0)->CON |= BIT(6);
+    JL_PORTA->DIR &= ~BIT(4);
+    JL_PORTA->DIE |= BIT(4);
+    JL_PORTA->OUT ^= BIT(4);
+    api_timer_hook(id);  
+}
+#endif
+
+#if API_TIMER_BIT_ENABLE & BIT(1)
+SET(interrupt(""))
+static void timer1_isr(void)
+{
+    uint8_t id = get_timer_id(1);   
+    TIMER_SFR(1)->CON |= BIT(6);
+    api_timer_hook(id);  
+}
+#endif
+
+#if API_TIMER_BIT_ENABLE & BIT(2)
+SET(interrupt(""))
+static void timer2_isr(void)
+{
+    uint8_t id = get_timer_id(2);   
+    TIMER_SFR(2)->CON |= BIT(6);
+    api_timer_hook(id);  
+}
+#endif
+
+
+static void timer_init(u8 timer_ch, u32 us)
+{
+    switch (timer_ch) {
+    case 0:
+		#if API_TIMER_BIT_ENABLE & BIT(0)
+        _timer_init(0, us);
+		#endif
+        break;
+    case 1:
+		#if API_TIMER_BIT_ENABLE & BIT(1)
+        _timer_init(1, us);
+		#endif
+        break;
+    case 2:
+		#if API_TIMER_BIT_ENABLE & BIT(2)
+        _timer_init(2, us);
+		#endif
+        break;
+    default:
+        break;
+    }
+}
+
+
 /*****************************************************************************************************
 **  Function
 ******************************************************************************************************/
@@ -40,14 +128,30 @@
 /*******************************************************************
 ** Parameters:		
 ** Returns:	
-** Description:		
+** Description:	isr default on
 *******************************************************************/
 bool hal_timer_init(uint8_t id)
 {
+	uint32_t period_us = 1000000 / TIMER_FREQ_ATT(id);
+	timer_init(id, period_us);
 	return true;
 }
 bool hal_timer_deinit(uint8_t id)
 {
+	switch (id) {
+    case 0:
+		TIMER_SFR(0)->CON = 0;
+        break;
+    case 1:
+		TIMER_SFR(1)->CON = 0;
+        break;
+    case 2:
+		TIMER_SFR(2)->CON = 0;
+        break;
+    default:
+        break;
+    }
+
 	return true;
 }
 

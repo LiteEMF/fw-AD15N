@@ -12,6 +12,7 @@
 #include "log.h"
 
 //硬件IIC设备数据初始化
+#ifndef LITEEMF_ENABLED
 const struct hw_iic_config hw_iic_cfg[] = {
     {
         //hw_iic0 data
@@ -24,6 +25,7 @@ const struct hw_iic_config hw_iic_cfg[] = {
         .isr_en = 0
     },
 };
+#endif
 
 
 

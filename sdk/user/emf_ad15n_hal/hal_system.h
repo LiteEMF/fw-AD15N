@@ -23,14 +23,14 @@ extern "C" {
 ** Defined
 *******************************************************************************************************/
 #ifndef HAL_SYS_FREQ			//系统时钟
-#define HAL_SYS_FREQ			(72 * 1000000L)			
+#define HAL_SYS_FREQ			(160 * 1000000L)		
 #endif
 
 #ifndef API_ENTER_CRITICAL
-#define API_ENTER_CRITICAL()
+#define API_ENTER_CRITICAL()	OS_ENTER_CRITICAL()
 #endif
 #ifndef API_EXIT_CRITICAL
-#define API_EXIT_CRITICAL()
+#define API_EXIT_CRITICAL()		OS_EXIT_CRITICAL()
 #endif
 
 

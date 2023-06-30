@@ -26,7 +26,7 @@ ad14n_LiteEMF:
 	$(MAKE) -C . -f Makefile.ad14n_LiteEMF
 
 clean_ad14n_LiteEMF:
-	$(MAKE) -C . -f Makefile.clean_ad14n_LiteEMF clean
+	$(MAKE) -C . -f Makefile.ad14n_LiteEMF clean
 
 ad15n_app_mg:
 	$(MAKE) -C . -f Makefile.ad15n_app_mg
