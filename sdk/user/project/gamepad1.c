@@ -191,10 +191,6 @@ void hw_user_vender_init(void)
         m_usbd_hid_types[id] = USBD_HID_SUPPORT;
 	}
 	#endif
-	
-    api_gpio_dir(PB_09,PIN_OUT,PIN_PULLNONE);       //TODO
-	api_gpio_out(PB_09,1);
-
 
     logd("call hw_user_vender_init ok\n" );
 
@@ -205,7 +201,7 @@ void user_vender_init(void)
     logd("call user_vender_init ok\n" );
 
 
-    api_gpio_dir(PB_00, PIN_OUT,PIN_PULLNONE);
+    // api_gpio_dir(PB_00, PIN_OUT,PIN_PULLNONE);
     // app_rumble_set_duty(RUMBLE_L, 0X80, 1000);
     // app_rumble_set_duty(RUMBLE_R, 0X80, 1000);
 	

@@ -320,8 +320,10 @@ SRC_DIRS := app api utils
 # 定义源文件变量
 LITEEMF_SRC := $(shell find $(addprefix $(LITEEMF_DIR)/, $(SRC_DIRS)) -type f -name "*.c")
 LITEEMF_HAL_SRC := $(shell find user/emf_ad15n_hal/ -type f -name "*.c")
+PROJECT_SRC := $(shell find user/project/ -type f -name "*.c")
 c_SRC_FILES += $(LITEEMF_SRC)
 c_SRC_FILES += $(LITEEMF_HAL_SRC)
+c_SRC_FILES += $(PROJECT_SRC)
 INCLUDES += $(LITEEMF_INCLUDES)
 
 	

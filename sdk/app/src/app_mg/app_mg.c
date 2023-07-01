@@ -21,7 +21,7 @@
 #endif
 
 #ifdef LITEEMF_ENABLED
-#include "emf.h"
+#include "app/emf.h"
 #endif
 
 #define LOG_TAG_CONST       NORM

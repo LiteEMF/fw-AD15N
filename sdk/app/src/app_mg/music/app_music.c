@@ -6,6 +6,9 @@
 #include "vm.h"
 #include "asm/power/p33.h"
 #include "app_dev_mg.h"
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#endif
 
 
 #define LOG_TAG_CONST       NORM
@@ -188,6 +191,11 @@ int app_music(void *param)
     }
 
     while (1) {
+
+        #ifdef LITEEMF_ENABLED
+        emf_handler(0);
+        #endif
+        
         get_msg(2, &msg[0]);
         bsp_loop();
 
