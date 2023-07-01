@@ -22,6 +22,7 @@
 
 #ifdef LITEEMF_ENABLED
 #include "app/emf.h"
+#include "api/api_log.h"
 #endif
 
 #define LOG_TAG_CONST       NORM
@@ -110,6 +111,11 @@ void app_usb_loop(void *parm)
     log_info("usb_app_loop \n");
     usb_start();
     while (1) {
+
+        #ifdef LITEEMF_ENABLED
+        emf_handler(0);
+        #endif
+
         get_msg(2, &msg[0]);
         bsp_loop();
         if (common_msg_deal(msg) != (-1)) {
@@ -160,7 +166,7 @@ void app(void)
     emf_init();
     #endif
 
-    app_mg_init(APP_MUSIC, NULL);
+    app_mg_init(APP_USB, NULL);
 
     while (1) {
         switch (cur_app) {

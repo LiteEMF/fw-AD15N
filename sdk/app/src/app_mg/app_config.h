@@ -4,6 +4,10 @@
 #define ENABLE_THIS_MOUDLE					1
 #define DISABLE_THIS_MOUDLE					0
 
+#ifdef LITEEMF_ENABLED
+#include "hw_config.h"
+#endif
+
 #define ENABLE								1
 #define DISABLE								0
 
@@ -71,9 +75,9 @@
 
 /*---------USB Configuration---------------*/
 #if HAS_USB_EN
-#define TCFG_PC_ENABLE						DISABLE  //PC模块使能
+#define TCFG_PC_ENABLE						ENABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE  //用于pc工具更新flash数据
-#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE  //外掛FLASH UDISK
+#define TCFG_USB_EXFLASH_UDISK_ENABLE       ENABLE  //外掛FLASH UDISK
 #define TCFG_UDISK_ENABLE					DISABLE  //U盘模块使能
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE

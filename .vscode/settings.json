@@ -46,6 +46,19 @@
 		"errno-base.h": "c",
 		"usb_stack.h": "c",
 		"malloc.h": "c",
-		"sd_host_api.h": "c"
+		"sd_host_api.h": "c",
+		"key.h": "c",
+		"sdk_cfg.h": "c",
+		"app_config.h": "c",
+		"hw_config.h": "c",
+		"hw_board.h": "c",
+		"stdint.h": "c",
+		"app_dev_mg.h": "c",
+		"limits.h": "c",
+		"stdbool.h": "c",
+		"app_music.h": "c",
+		"app_km.h": "c",
+		"usbh.h": "c",
+		"usbd.h": "c"
 	}
 }

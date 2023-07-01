@@ -13,7 +13,8 @@
 **	Description:	
 ************************************************************************************************************/
 #include "hw_config.h"
-#if defined GAMEPAD1 && GAMEPAD1
+#if defined APP_MG && APP_MG
+
 #include "app/emf.h"
 #include "app/app_km.h"
 #include "api/usb/host/usbh.h"

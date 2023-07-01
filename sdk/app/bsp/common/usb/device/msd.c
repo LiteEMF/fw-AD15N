@@ -943,6 +943,7 @@ static void read_format_capacity(const struct usb_device_t *usb_device)
     void *dev_fd = check_disk_status(cur_lun);
     if (!dev_fd) {
         stall_error(usb_device, 0, 0x0f);
+        log_error("msd read_format_capacity def_fd not find!\n");
         return;
     }
 
@@ -1007,6 +1008,7 @@ void USB_MassStorage(const struct usb_device_t *usb_device)
         msd_handle->info.bError = 0;
     } else {
         wdt_clear();
+        if(0X25 != msd_handle->cbw.operationCode) log_info("msd cmd:%x\n",msd_handle->cbw.operationCode);
         switch (msd_handle->cbw.operationCode) {
         case INQUIRY://0x12
 #if TCFG_USB_MSD_CDROM_ENABLE

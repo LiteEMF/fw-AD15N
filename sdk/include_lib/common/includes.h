@@ -2,6 +2,8 @@
 #define _INCLUDES_
 
 #include "typedef.h"
+#include "app_config.h"
+
 #include "sfr.h"
 #include "csfr.h"
 #include "hwi.h"

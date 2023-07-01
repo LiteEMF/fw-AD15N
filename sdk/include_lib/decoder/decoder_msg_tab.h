@@ -3,6 +3,7 @@
 
 
 #include "typedef.h"
+#include "app_config.h"
 
 enum {
 #if DECODER_F1A_EN

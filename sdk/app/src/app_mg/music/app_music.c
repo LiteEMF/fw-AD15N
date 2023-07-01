@@ -8,6 +8,7 @@
 #include "app_dev_mg.h"
 #ifdef LITEEMF_ENABLED
 #include "app/emf.h"
+#include "api/api_log.h"
 #endif
 
 
