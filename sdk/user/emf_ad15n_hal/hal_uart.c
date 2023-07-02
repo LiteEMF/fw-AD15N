@@ -18,6 +18,7 @@
 
 #include  "api/api_uart.h"
 #include  "api/api_gpio.h"
+#include "config.h"
 #include "clock.h"
 
 #include  "api/api_log.h"
@@ -87,6 +88,47 @@ bool hal_uart_tx(uint8_t id,void * buf, uint16_t len)
 bool hal_uart_init(uint8_t id,uint32_t baudrate)
 {
 	struct uart_platform_data_t uart_para = {0};
+
+    if(UART_DEBUG_ID == id)
+    {
+        if (FALSE == libs_debug) 
+        {
+            return true;
+        }
+        
+        uart_clk_sel();//JL_CLK->CON0 &= ~(0b11 << 8);//pll48
+
+        if(m_uart_map[id].tx == IO_PORTA_00)
+        {
+            JL_IOMC->IOMC0 &= ~BIT(6);
+            JL_IOMC->IOMC0 |=  BIT(5);
+            JL_IOMC->IOMC0 |=  BIT(4);
+
+            JL_PORTA->DIR &= ~BIT(0);
+            JL_PORTA->DIR |= BIT(1);
+            JL_PORTA->DIE |= BIT(0) | BIT(1);
+        }
+        else if(m_uart_map[id].tx == IO_PORTA_04)
+        {
+            JL_IOMC->IOMC0 &= ~BIT(6);
+            JL_IOMC->IOMC0 &= ~BIT(5);
+            JL_IOMC->IOMC0 |=  BIT(4);
+
+            JL_PORTA->DIR &= ~BIT(4);
+            JL_PORTA->DIR |= BIT(5);
+            JL_PORTA->DIE |= BIT(4) | BIT(5);
+        }
+        else{
+            gpio_output_channle(m_uart_map[id].tx, CH1_UT0_TX);//io选择--->设置输出通道
+        }
+        JL_UT0_TypeDef *uart0 = (JL_UT0_TypeDef*)m_uart_map[id].peripheral;
+        uart0->BAUD = clk_get("uart") / baudrate / 4 - 1;
+        uart0->CON = BIT(13) | BIT(12) | BIT(0);
+        uart0->CON |= BIT(13);  //清Tx pending
+        uart0->BUF = ' ';
+        return true;
+    }
+
 
     uart_para.tx_pin = m_uart_map[id].tx;
     uart_para.rx_pin = m_uart_map[id].rx;

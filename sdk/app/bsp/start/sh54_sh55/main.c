@@ -20,6 +20,10 @@
 #include "vm.h"
 #include "asm/power_interface.h"
 #include "power_api.h"
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#include "api/api_log.h"
+#endif
 
 #define LOG_TAG_CONST       MAIN
 #define LOG_TAG             "[main]"
@@ -40,7 +44,12 @@ int c_main(int cfg_addr)
     mask_init(exception_analyze, putchar);
     all_init_isr();
 
+    
+#ifdef HW_UART_MAP
+	api_uart_init(UART_DEBUG_ID);
+#else
     log_init(1000000);
+#endif
 
     log_info("---------sh5x apps------------- \n");
 
