@@ -23,28 +23,48 @@
             "command": "make -C sdk/ clean -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
-            "label": "ad14n_LiteEMF",
+        },
+        {
+            "label": "ac104n_mbox_LiteEMF",
             "type": "shell",
             "windows": {
-                "command": ".vscode/winmk.bat ad14n_LiteEMF"
+                "command": ".vscode/winmk.bat ac104n_mbox_LiteEMF"
             },
-            "command": "make -C sdk/ ad14n_LiteEMF -j`nproc`",
+            "command": "make -C sdk/ ac104n_mbox_LiteEMF -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
-            "label": "clean_ad14n_LiteEMF",
+        },
+        {
+            "label": "clean_ac104n_mbox_LiteEMF",
             "type": "shell",
             "windows": {
-                "command": ".vscode/winmk.bat clean_ad14n_LiteEMF"
+                "command": ".vscode/winmk.bat clean_ac104n_mbox_LiteEMF"
             },
-            "command": "make -C sdk/ clean_ad14n_LiteEMF -j`nproc`",
+            "command": "make -C sdk/ clean_ac104n_mbox_LiteEMF -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
+            "label": "ad14n_mg_LiteEMF",
+            "type": "shell",
+            "windows": {
+                "command": ".vscode/winmk.bat ad14n_mg_LiteEMF"
+            },
+            "command": "make -C sdk/ ad14n_mg_LiteEMF -j`nproc`",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "clean_ad14n_mg_LiteEMF",
+            "type": "shell",
+            "windows": {
+                "command": ".vscode/winmk.bat clean_ad14n_mg_LiteEMF"
+            },
+            "command": "make -C sdk/ clean_ad14n_mg_LiteEMF -j`nproc`",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
             "label": "ad15n_app_mg",
             "type": "shell",
             "windows": {
@@ -53,8 +73,8 @@
             "command": "make -C sdk/ ad15n_app_mg -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "ad14n_simple",
             "type": "shell",
             "windows": {
@@ -63,8 +83,8 @@
             "command": "make -C sdk/ ad14n_simple -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "ad14n_mcu",
             "type": "shell",
             "windows": {
@@ -73,8 +93,8 @@
             "command": "make -C sdk/ ad14n_mcu -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "ad14n_app_mg",
             "type": "shell",
             "windows": {
@@ -83,8 +103,8 @@
             "command": "make -C sdk/ ad14n_app_mg -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "ac104n_mbox_mg",
             "type": "shell",
             "windows": {
@@ -93,8 +113,8 @@
             "command": "make -C sdk/ ac104n_mbox_mg -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "ad15n_mcu",
             "type": "shell",
             "windows": {
@@ -103,8 +123,8 @@
             "command": "make -C sdk/ ad15n_mcu -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "ad15n_simple",
             "type": "shell",
             "windows": {
@@ -113,8 +133,8 @@
             "command": "make -C sdk/ ad15n_simple -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ad15n_app_mg",
             "type": "shell",
             "windows": {
@@ -123,8 +143,8 @@
             "command": "make -C sdk/ clean_ad15n_app_mg -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ad14n_simple",
             "type": "shell",
             "windows": {
@@ -133,8 +153,8 @@
             "command": "make -C sdk/ clean_ad14n_simple -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ad14n_mcu",
             "type": "shell",
             "windows": {
@@ -143,8 +163,8 @@
             "command": "make -C sdk/ clean_ad14n_mcu -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ad14n_app_mg",
             "type": "shell",
             "windows": {
@@ -153,8 +173,8 @@
             "command": "make -C sdk/ clean_ad14n_app_mg -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ac104n_mbox_mg",
             "type": "shell",
             "windows": {
@@ -163,8 +183,8 @@
             "command": "make -C sdk/ clean_ac104n_mbox_mg -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ad15n_mcu",
             "type": "shell",
             "windows": {
@@ -173,8 +193,8 @@
             "command": "make -C sdk/ clean_ad15n_mcu -j`nproc`",
             "problemMatcher": [],
             "group": "build"
-        }
-        ,{
+        },
+        {
             "label": "clean_ad15n_simple",
             "type": "shell",
             "windows": {

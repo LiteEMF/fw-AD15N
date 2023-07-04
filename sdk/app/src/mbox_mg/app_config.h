@@ -1,5 +1,11 @@
 #ifndef _MBOX_CONFIG_H
 #define _MBOX_CONFIG_H
+
+#ifdef LITEEMF_ENABLED
+#include "hw_config.h"
+#endif
+
+
 #include "common/ui/ui_common.h"
 
 #define ENABLE								1
@@ -38,7 +44,7 @@
 /*---------UI Configuration---------------*/
 #define LED_FADE_ON()
 #define LED_FADE_OFF()
-#define LED_5X7					1//与外挂flash io冲突
+#define LED_5X7					0//与外挂flash io冲突
 
 #if LED_5X7
 #define UI_ENABLE				1
@@ -137,8 +143,8 @@ flash厂家联系评估写的频率是否是产品安全范围。
 /*---------USB Configuration---------------*/
 #define TCFG_PC_ENABLE						ENABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE
-#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE  //外掛FLASH UDISK
-#define TCFG_UDISK_ENABLE					ENABLE //U盘模块使能
+#define TCFG_USB_EXFLASH_UDISK_ENABLE       ENABLE  //外掛FLASH UDISK
+#define TCFG_UDISK_ENABLE					ENABLE 	 //U盘模块使能
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
 #define TCFG_AOA_ENABLE      				DISABLE

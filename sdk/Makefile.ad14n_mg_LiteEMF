@@ -11,6 +11,10 @@
 #       可以通过 ulimit -n 8096 来设置一个较大的值
 #
 
+#*******************************************************************
+#** Description: 参考 Makefile.ad14n_app_mg
+#*******************************************************************
+
 # 工具路径设置
 ifeq ($(OS), Windows_NT)
 # Windows 下工具链位置
@@ -63,7 +67,7 @@ AR  := $(TOOL_DIR)/$(AR)
 OUT_ELF   := app/post_build/sh54/sdk.elf
 OBJ_FILE  := $(OUT_ELF).objs.txt
 # 编译路径设置
-BUILD_DIR := ac104n_mbox_mg_objs
+BUILD_DIR := ad14n_app_mg_objs
 
 # 编译参数设置
 CFLAGS := \
@@ -96,39 +100,32 @@ CXXFLAGS :=
 
 # 宏定义
 DEFINES := \
-	-DD_MBOX_SDK=1 \
-	-DD_APP_MBOX=1 \
+	-DD_TOY_SDK=1 \
+	-DD_APP_TOY=1 \
 	-DMAX_F1A_CHANNEL=2 \
 	-DFPGA=0 \
 	-DCPU_SH54=1 \
 	-DFLASH_CACHE_ENABLE=1 \
 	-DAUDIO_ADC_EN=1 \
 	-DSPEAKER_EN=1 \
-	-DVO_PITCH_EN=1 \
-	-DPCM_EQ_EN=1 \
-	-DAUX_EN=1 \
-	-DENCODER_EN=1 \
+	-DVO_PITCH_EN=0 \
+	-DPCM_EQ_EN=0 \
 	-DDECODER_UMP3_EN=1 \
-	-DDECODER_MP3_ST_EN=1 \
-	-DDECODER_WAV_EN=1 \
+	-DDECODER_MP3_ST_EN=0 \
+	-DDECODER_WAV_EN=0 \
 	-DDECODER_F1A_EN=1 \
-	-DDECODER_MIDI_EN=1 \
-	-DDECODER_MIDI_KEYBOARD_EN=0 \
 	-DDECODER_A_EN=1 \
 	-DAUDIO_SPEED_EN=1 \
-	-DEXT_FLASH_EN=1 \
-	-DFM_EN=1 \
 	-DEEPROM_EN=0 \
-	-DHAS_USB_EN=1 \
-	-DHAS_SDMMC_EN=1 \
 	-DHAS_MIO_EN=1 \
 	-DHAS_UPDATE_EN=1 \
 	-DHAS_UART_UPDATE_EN=1 \
 	-DECHO_EN=1 \
 	-DHOWLING_EN=1 \
-	-DFATFS_ENABLE=1 \
-	-DSIMPLE_FATFS_ENABLE=0 \
+	-DFATFS_ENABLE=0 \
+	-DSIMPLE_FATFS_ENABLE=1 \
 	-DNOFLOAT \
+	-DLITEEMF_ENABLED \
 
 
 DEFINES += $(EXT_CFLAGS) # 额外的一些定义
@@ -174,17 +171,14 @@ INCLUDES := \
 	-Iapp/bsp/common/reserved_area \
 	-Iapp/bsp/modules \
 	-Iapp/bsp/modules/timer \
-	-Iapp/src/mbox_mg \
-	-Iapp/bsp/common/fm \
-	-Iapp/bsp/common/fm/rda5807 \
-	-Iapp/bsp/common/fm/qn8035 \
-	-Iapp/bsp/common/fm/bk1080 \
+	-Iapp/src/app_mg \
 	-Iinclude_lib/agreement \
 	-Iapp/bsp/common/uart_update \
+	-Iapp/src/app_mg/simple \
+	-Iapp/src/app_mg/common/music_api \
+	-Iapp/src/app_mg/common/app_dev \
 	-Iapp/bsp/common/speaker \
 	-Iinclude_lib/speaker \
-	-Iapp/bsp/common/vo_pitch \
-	-Iinclude_lib/vo_pitch \
 	-Iapp/bsp/common/usb \
 	-Iapp/bsp/common/usb/device \
 	-Iapp/bsp/common/usb/host \
@@ -201,27 +195,20 @@ c_SRC_FILES := \
 	app/bsp/common/decoder/list/f1a_api.c \
 	app/bsp/common/decoder/list/f1x_parsing.c \
 	app/bsp/common/decoder/list/midi_api.c \
+	app/bsp/common/decoder/list/midi_ctrl_api.c \
 	app/bsp/common/decoder/list/mio_phy.c \
-	app/bsp/common/decoder/list/mp3_standard_api.c \
 	app/bsp/common/decoder/list/ump3_api.c \
-	app/bsp/common/decoder/list/wav_api.c \
 	app/bsp/common/decoder/mio_api.c \
 	app/bsp/common/decoder/sine_play.c \
 	app/bsp/common/encoder/encoder_api.c \
 	app/bsp/common/encoder/list/a_encoder.c \
-	app/bsp/common/encoder/list/mp3_encoder.c \
 	app/bsp/common/encoder/list/ump3_encoder.c \
-	app/bsp/common/fm/bk1080/Bk1080.c \
-	app/bsp/common/fm/fm_iic_dri.c \
-	app/bsp/common/fm/qn8035/QN8035.c \
-	app/bsp/common/fm/rda5807/RDA5807.c \
-	app/bsp/common/fs/fat/fat_resource.c \
 	app/bsp/common/fs/nor_fs/nor_fs_resource.c \
+	app/bsp/common/fs/smpl_fat/smpl_fat_resource.c \
 	app/bsp/common/fs/sydf/sydf_resource.c \
 	app/bsp/common/fs/vfs.c \
 	app/bsp/common/fs/vfs_fat.c \
 	app/bsp/common/fs/vfs_resource.c \
-	app/bsp/common/iic_soft/iic_soft.c \
 	app/bsp/common/key/key.c \
 	app/bsp/common/key/key_drv_ad.c \
 	app/bsp/common/key/key_drv_io.c \
@@ -230,18 +217,68 @@ c_SRC_FILES := \
 	app/bsp/common/key/key_touch.c \
 	app/bsp/common/msg/msg.c \
 	app/bsp/common/norflash/norflash.c \
-	app/bsp/common/norflash/ini_area_norflash.c \
 	app/bsp/common/power_manage/app_power_mg.c \
 	app/bsp/common/reserved_area/reserved_area.c \
 	app/bsp/common/sound_effect_list/echo_api.c \
 	app/bsp/common/sound_effect_list/howling_pitchshifter_api.c \
 	app/bsp/common/sound_effect_list/notch_howling_api.c \
-	app/bsp/common/sound_effect_list/pcm_eq_api.c \
 	app/bsp/common/sound_effect_list/speed_api.c \
-	app/bsp/common/sound_effect_list/vo_pitch_api.c \
 	app/bsp/common/speaker/speak_api.c \
 	app/bsp/common/spi_soft/spi_soft.c \
 	app/bsp/common/uart_update/uart_update.c \
+	app/bsp/common/vm/vm_api.c \
+	app/bsp/cpu/sh54/adc_drv.c \
+	app/bsp/cpu/sh54/clock.c \
+	app/bsp/cpu/sh54/cpu.c \
+	app/bsp/cpu/sh54/dac_cpu.c \
+	app/bsp/cpu/sh54/irflt.c \
+	app/bsp/cpu/sh54/pl_cnt.c \
+	app/bsp/cpu/sh54/port_init.c \
+	app/bsp/cpu/sh54/port_wkup.c \
+	app/bsp/cpu/sh54/power_api.c \
+	app/bsp/cpu/sh54/iic_hw.c \
+	app/bsp/cpu/sh54/spi1.c \
+	app/bsp/cpu/sh54/uart.c \
+	app/bsp/cpu/sh54/uart_dev.c \
+	app/bsp/lib/adc_api.c \
+	app/bsp/lib/audio.c \
+	app/bsp/lib/audio_mic_capless.c \
+	app/bsp/lib/common.c \
+	app/bsp/lib/dac_api.c \
+	app/bsp/lib/my_malloc.c \
+	app/bsp/lib/tab_read.c \
+	app/bsp/modules/soft_isr/soft_isr.c \
+	app/bsp/modules/timer/tick_timer_modules.c \
+	app/bsp/modules/timer/tick_timer_sys.c \
+	app/bsp/start/sh54_sh55/bsp_loop.c \
+	app/bsp/start/sh54_sh55/device_list.c \
+	app/bsp/start/sh54_sh55/init.c \
+	app/bsp/start/sh54_sh55/main.c \
+	app/src/app_mg/app_config.c \
+	app/src/app_mg/app_mg.c \
+	app/src/app_mg/common/app_dev/app_dev_mg.c \
+	app/src/app_mg/common/common_msg.c \
+	app/src/app_mg/common/idle_check.c \
+	app/src/app_mg/common/music_api/music_api.c \
+	app/src/app_mg/common/music_api/music_file_op/music_file_op.c \
+	app/src/app_mg/common/music_api/music_midi_api.c \
+	app/src/app_mg/common/music_api/music_midi_ctrl_api.c \
+	app/src/app_mg/linein/app_linein.c \
+	app/src/app_mg/linein/app_linein_key.c \
+	app/src/app_mg/midi/app_midi.c \
+	app/src/app_mg/midi/app_midi_ctrl.c \
+	app/src/app_mg/midi/app_midi_ctrl_key.c \
+	app/src/app_mg/midi/app_midi_key.c \
+	app/src/app_mg/music/app_music.c \
+	app/src/app_mg/music/app_music_key.c \
+	app/src/app_mg/poweroff/app_poweroff.c \
+	app/src/app_mg/poweroff/app_poweroff_key.c \
+	app/src/app_mg/record/app_record.c \
+	app/src/app_mg/record/app_record_key.c \
+
+
+ifeq ("aaa","aaa")
+c_SRC_FILES += \
 	app/bsp/common/usb/device/descriptor.c \
 	app/bsp/common/usb/device/hid.c \
 	app/bsp/common/usb/device/msd.c \
@@ -258,64 +295,35 @@ c_SRC_FILES := \
 	app/bsp/common/usb/usb_config.c \
 	app/bsp/common/usb/usb_host_config.c \
 	app/bsp/common/usb/usb_test.c \
-	app/bsp/common/usb/usr/usb_audio_interface.c \
-	app/bsp/common/vm/vm_api.c \
-	app/bsp/cpu/sh54/adc_drv.c \
-	app/bsp/cpu/sh54/clock.c \
-	app/bsp/cpu/sh54/cpu.c \
-	app/bsp/cpu/sh54/dac_cpu.c \
-	app/bsp/cpu/sh54/iic_hw.c \
-	app/bsp/cpu/sh54/irflt.c \
-	app/bsp/cpu/sh54/pl_cnt.c \
-	app/bsp/cpu/sh54/port_init.c \
-	app/bsp/cpu/sh54/port_wkup.c \
-	app/bsp/cpu/sh54/power_api.c \
-	app/bsp/cpu/sh54/uart.c \
-	app/bsp/cpu/sh54/uart_dev.c \
-	app/bsp/cpu/sh54/spi1.c \
-	app/bsp/lib/adc_api.c \
-	app/bsp/lib/audio.c \
-	app/bsp/lib/audio_mic_capless.c \
-	app/bsp/lib/common.c \
-	app/bsp/lib/dac_api.c \
-	app/bsp/lib/my_malloc.c \
-	app/bsp/lib/tab_read.c \
-	app/bsp/modules/soft_isr/soft_isr.c \
-	app/bsp/modules/timer/tick_timer_modules.c \
-	app/bsp/modules/timer/tick_timer_sys.c \
-	app/bsp/start/sh54_sh55/bsp_loop.c \
-	app/bsp/start/sh54_sh55/device_list.c \
-	app/bsp/start/sh54_sh55/init.c \
-	app/bsp/start/sh54_sh55/main.c \
-	app/src/mbox_mg/app_config.c \
-	app/src/mbox_mg/common/hot_msg.c \
-	app/src/mbox_mg/common/mbox_common.c \
-	app/src/mbox_mg/common/pa_mute.c \
-	app/src/mbox_mg/common/ui/led5x7.c \
-	app/src/mbox_mg/common/ui/led_ui_api.c \
-	app/src/mbox_mg/common/ui/ui_common.c \
-	app/src/mbox_mg/fm/fm_api.c \
-	app/src/mbox_mg/fm/fm_key.c \
-	app/src/mbox_mg/fm/fm_radio.c \
-	app/src/mbox_mg/line_in/line_in_key.c \
-	app/src/mbox_mg/line_in/line_in_mode.c \
-	app/src/mbox_mg/loudspeaker/loudspeaker_key.c \
-	app/src/mbox_mg/loudspeaker/loudspeaker_mode.c \
-	app/src/mbox_mg/mbox_main.c \
-	app/src/mbox_mg/music/break_point.c \
-	app/src/mbox_mg/music/device.c \
-	app/src/mbox_mg/music/get_music_file.c \
-	app/src/mbox_mg/music/music_auto_save_bp.c \
-	app/src/mbox_mg/music/music_key_table.c \
-	app/src/mbox_mg/music/music_play.c \
-	app/src/mbox_mg/music/play_file.c \
-	app/src/mbox_mg/rec/rec_api.c \
-	app/src/mbox_mg/rec/rec_device.c \
-	app/src/mbox_mg/rec/rec_key.c \
-	app/src/mbox_mg/rec/rec_mode.c \
-	app/src/mbox_mg/usb_device/usb_device_mode.c \
-	app/src/mbox_mg/usb_device/usb_key_table.c \
+	app/bsp/common/usb/usr/usb_audio_interface.c 
+endif
 
+# add LiteEMF files 
+# 定义根目录
+LITEEMF_DIR := user/LiteEMF
+
+# 头文件包含
+LITEEMF_INCLUDES = \
+	-I user/ \
+	-I user/emf_ad15n_hal \
+	-I $(LITEEMF_DIR) \
+	-I $(LITEEMF_DIR)/app \
+	-I $(LITEEMF_DIR)/utils\
+	-I $(LITEEMF_DIR)/api \
+	
+# 定义源代码目录
+SRC_DIRS := app api utils
+
+# 定义源文件变量
+LITEEMF_SRC := $(shell find $(addprefix $(LITEEMF_DIR)/, $(SRC_DIRS)) -type f -name "*.c")
+LITEEMF_HAL_SRC := $(shell find user/emf_ad15n_hal/ -type f -name "*.c")
+PROJECT_SRC := $(shell find user/project/ -type f -name "*.c")
+c_SRC_FILES += $(LITEEMF_SRC)
+c_SRC_FILES += $(LITEEMF_HAL_SRC)
+c_SRC_FILES += $(PROJECT_SRC)
+INCLUDES += $(LITEEMF_INCLUDES)
+
+	
 
 # 需要编译的 .S 文件
 S_SRC_FILES :=
@@ -342,41 +350,36 @@ LFLAGS := \
 	--plugin-opt=save-temps \
 	--gc-sections \
 	--start-group \
-	include_lib/liba/sh54/mbox_mg/cpu_lib.a \
-	include_lib/liba/sh54/mbox_mg/address_lib.a \
-	include_lib/liba/sh54/mbox_mg/efuse_trim_value_lib.a \
-	include_lib/liba/sh54/mbox_mg/fs_lib.a \
-	include_lib/liba/sh54/mbox_mg/audio_lib.a \
-	include_lib/liba/sh54/mbox_mg/src_lib.a \
-	include_lib/liba/sh54/mbox_mg/decoder_mge_lib.a \
-	include_lib/liba/sh54/mbox_mg/ae_resample_lib.a \
-	include_lib/liba/sh54/mbox_mg/dev_mg_lib.a \
-	include_lib/liba/sh54/mbox_mg/malloc_lib.a \
-	include_lib/liba/sh54/mbox_mg/file_crc16_lib.a \
+	include_lib/liba/sh54/app_mg/cpu_lib.a \
+	include_lib/liba/sh54/app_mg/address_lib.a \
+	include_lib/liba/sh54/app_mg/efuse_trim_value_lib.a \
+	include_lib/liba/sh54/app_mg/fs_lib.a \
+	include_lib/liba/sh54/app_mg/audio_lib.a \
+	include_lib/liba/sh54/app_mg/src_lib.a \
+	include_lib/liba/sh54/app_mg/decoder_mge_lib.a \
+	include_lib/liba/sh54/app_mg/ae_resample_lib.a \
+	include_lib/liba/sh54/app_mg/dev_mg_lib.a \
+	include_lib/liba/sh54/app_mg/malloc_lib.a \
+	include_lib/liba/sh54/app_mg/file_crc16_lib.a \
 	include_lib/liba/ARCH/pi32_lto/lib_echo_cal.a \
 	include_lib/liba/ARCH/pi32_lto/lib_howling_fs.a \
 	include_lib/liba/ARCH/pi32_lto/notchHowling.a \
-	include_lib/liba/sh54/mbox_mg/ae_howling_lib.a \
+	include_lib/liba/sh54/app_mg/ae_howling_lib.a \
 	include_lib/liba/ARCH/pi32_lto/lib_speed_pitch.a \
-	include_lib/liba/sh54/mbox_mg/update_lib.a \
-	include_lib/liba/sh54/mbox_mg/uart_update_lib.a \
-	include_lib/liba/sh54/mbox_mg/agreement.a \
-	include_lib/liba/sh54/mbox_mg/encoder_mge_lib.a \
+	include_lib/liba/sh54/app_mg/update_lib.a \
+	include_lib/liba/sh54/app_mg/uart_update_lib.a \
+	include_lib/liba/sh54/app_mg/agreement.a \
+	include_lib/liba/sh54/app_mg/encoder_mge_lib.a \
 	include_lib/liba/ARCH/pi32_lto/lib_a_code.a \
 	include_lib/liba/ARCH/pi32_lto/lib_mp3_decode.a \
 	include_lib/liba/ARCH/pi32_lto/lib_mp2_encode.a \
-	include_lib/liba/ARCH/pi32_lto/lib_mp3_standard_decode.a \
-	include_lib/liba/ARCH/pi32_lto/lib_mp2standard_encode.a \
-	include_lib/liba/ARCH/pi32_lto/lib_wav_decode.a \
 	include_lib/liba/ARCH/pi32_lto/lib_f1a_decode.a \
 	include_lib/liba/ARCH/pi32_lto/lib_midi_decode.a \
 	include_lib/liba/ARCH/pi32_lto/lib_a_decode.a \
-	include_lib/liba/sh54/mbox_mg/periphy_lib.a \
-	include_lib/liba/sh54/mbox_mg/file_manage_lib.a \
-	include_lib/liba/sh54/mbox_mg/sdmmc_lib.a \
-	include_lib/liba/ARCH/pi32_lto/lib_vopitch_cal.a \
-	include_lib/liba/ARCH/pi32_lto/lib_pcm_eq.a \
-	include_lib/liba/sh54/mbox_mg/ae_pcm_eq_lib.a \
+	include_lib/liba/sh54/app_mg/periphy_lib.a \
+	include_lib/liba/sh54/app_mg/file_manage_lib.a \
+	include_lib/liba/sh54/app_mg/sdmmc_lib.a \
+	include_lib/liba/sh54/app_mg/ex_mcu_lib.a \
 	--end-group \
 	-Tapp/post_build/sh54/app.ld \
 	-M=app/post_build/sh54/app.map \
@@ -440,8 +443,8 @@ all: pre_build $(OUT_ELF)
 
 pre_build:
 	$(info +PRE-BUILD)
-	$(QUITE) $(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -D__LD__ -E -P app/post_build/sh54/mbox_mg/app_ld.c -o app/post_build/sh54/app.ld
-	$(QUITE) $(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -D__LD__ -E -P app/post_build/sh54/mbox_mg/download_bat.c -o $(POST_SCRIPT)
+	$(QUITE) $(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -D__LD__ -E -P app/post_build/sh54/app_mg/app_ld.c -o app/post_build/sh54/app.ld
+	$(QUITE) $(CC) $(CFLAGS) $(DEFINES) $(INCLUDES) -D__LD__ -E -P app/post_build/sh54/app_mg/download_bat.c -o $(POST_SCRIPT)
 	$(QUITE) $(FIXBAT) $(POST_SCRIPT)
 
 clean:

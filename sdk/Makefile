@@ -14,19 +14,25 @@
 # make ad15n_mcu
 # make ad15n_simple
 
-.PHONY: all clean ad14n_LiteEMF clean_ad14n_LiteEMF ad15n_app_mg ad14n_simple ad14n_mcu ad14n_app_mg ac104n_mbox_mg ad15n_mcu ad15n_simple clean_ad15n_app_mg clean_ad14n_simple clean_ad14n_mcu clean_ad14n_app_mg clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad15n_simple
+.PHONY: all clean ac104n_mbox_LiteEMF clean_ac104n_mbox_LiteEMF ad14n_mg_LiteEMF clean_ad14n_mg_LiteEMF ad15n_app_mg ad14n_simple ad14n_mcu ad14n_app_mg ac104n_mbox_mg ad15n_mcu ad15n_simple clean_ad15n_app_mg clean_ad14n_simple clean_ad14n_mcu clean_ad14n_app_mg clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad15n_simple
 
-all: ad14n_LiteEMF ad15n_app_mg ad14n_simple ad14n_mcu ad14n_app_mg ac104n_mbox_mg ad15n_mcu ad15n_simple
+all: ac104n_mbox_LiteEMF ad14n_mg_LiteEMF ad15n_app_mg ad14n_simple ad14n_mcu ad14n_app_mg ac104n_mbox_mg ad15n_mcu ad15n_simple
 	@echo +ALL DONE
 
-clean: clean_ad14n_LiteEMF clean_ad15n_app_mg clean_ad14n_simple clean_ad14n_mcu clean_ad14n_app_mg clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad15n_simple
+clean: clean_ac104n_mbox_LiteEMF clean_ad14n_mg_LiteEMF clean_ad15n_app_mg clean_ad14n_simple clean_ad14n_mcu clean_ad14n_app_mg clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad15n_simple
 	@echo +CLEAN DONE
 
-ad14n_LiteEMF:
-	$(MAKE) -C . -f Makefile.ad14n_LiteEMF
+ac104n_mbox_LiteEMF:
+	$(MAKE) -C . -f Makefile.ac104n_mbox_LiteEMF
 
-clean_ad14n_LiteEMF:
-	$(MAKE) -C . -f Makefile.ad14n_LiteEMF clean
+clean_ac104n_mbox_LiteEMF:
+	$(MAKE) -C . -f Makefile.ac104n_mbox_LiteEMF clean
+
+ad14n_mg_LiteEMF:
+	$(MAKE) -C . -f Makefile.ad14n_mg_LiteEMF
+
+clean_ad14n_mg_LiteEMF:
+	$(MAKE) -C . -f Makefile.ad14n_mg_LiteEMF clean
 
 ad15n_app_mg:
 	$(MAKE) -C . -f Makefile.ad15n_app_mg
