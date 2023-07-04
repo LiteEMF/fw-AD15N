@@ -3,8 +3,10 @@
 #include "msg.h"
 #include "app_mg/music/app_music.h"
 #include "app_mg/poweroff/app_poweroff.h"
+#if APP_MODE_USB_EN
 #include "usb/device/usb_stack.h"
 #include "usb/device/msd.h"
+#endif
 #include "audio.h"
 #include "efuse.h"
 #if APP_MODE_MIDI_EN
@@ -166,7 +168,11 @@ void app(void)
     emf_init();
     #endif
 
+    #if APP_MODE_USB_EN
     app_mg_init(APP_USB, NULL);
+    #else
+    app_mg_init(APP_MUSIC, NULL);
+    #endif
 
     while (1) {
         switch (cur_app) {

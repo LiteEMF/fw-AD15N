@@ -50,4 +50,14 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-sdk/app/post_build/
+
+# sdk/app/post_build/**
+# !sdk/app/post_build/**/*.c
+sdk/app/post_build/**/*.bin
+sdk/app/post_build/**/*.fw
+sdk/app/post_build/**/*.ld
+sdk/app/post_build/**/*.txt
+sdk/app/post_build/**/*.bc
+sdk/app/post_build/**/*.ufw
+sdk/app/post_build/**/*.lst
+

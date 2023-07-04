@@ -133,6 +133,7 @@
 #define USB_EP0_STAGE_OUT         2
 #define USB_EP0_SET_STALL         3
 #define USB_EP0_IGNORE            4
+#define USB_EP0_NACK              5
 
 //USB_CON0
 #define PHY_ON          0

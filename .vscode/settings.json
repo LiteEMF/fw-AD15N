@@ -59,6 +59,21 @@
 		"app_music.h": "c",
 		"app_km.h": "c",
 		"usbh.h": "c",
-		"usbd.h": "c"
+		"usbd.h": "c",
+		"hal_iic_host.h": "c",
+		"iic_hw.h": "c",
+		"usb_typedef.h": "c",
+		"emf_utils.h": "c",
+		"vector.h": "c",
+		"filter.h": "c",
+		"usb_config.h": "c",
+		"usb_common_def.h": "c",
+		"template.h": "c",
+		"usb_phy.h": "c",
+		"ch9.h": "c",
+		"otg.h": "c",
+		"usb.h": "c",
+		"device_drive.h": "c",
+		"irq.h": "c"
 	}
 }
