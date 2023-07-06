@@ -89,7 +89,7 @@ extern "C" {
 		#define ENCODER_EN					1
 		#define DECODER_MIDI_EN				0
 		#define DECODER_MIDI_KEYBOARD_EN	0
-		#define HAS_USB_EN					1
+		#define HAS_USB_EN					0
 		#define EXT_FLASH_EN				1
 		#define FM_EN						0
 		#define AUX_EN						1
@@ -99,12 +99,12 @@ extern "C" {
 		#define APP_KEY_ENABLE				1
 		#define API_TIMER_BIT_ENABLE 		BIT(0)
 
-		#define API_USBD_BIT_ENABLE			0 //BIT(0)
+		#define API_USBD_BIT_ENABLE			BIT(0)
 		#define USBD_NUM					1
-		#define USBD_TYPE_SUPPORT 			(BIT_ENUM(DEV_TYPE_MSD))
-		// #define USBD_TYPE_SUPPORT 		(BIT_ENUM(DEV_TYPE_HID))
+		#define USBD_RAM_DISK_ENABLE		1
+		#define USBD_TYPE_SUPPORT 		(BIT_ENUM(DEV_TYPE_MSD))
+		// #define USBD_TYPE_SUPPORT 			BIT_ENUM(DEV_TYPE_HID)
 		// #define USBD_HID_SUPPORT			(BIT_ENUM(HID_TYPE_KB) | BIT_ENUM(HID_TYPE_MOUSE) | BIT_ENUM(HID_TYPE_CONSUMER))
-		// #define USBD_HID_SUPPORT			(BIT_ENUM(HID_TYPE_KB))
 
 		#define SW_VERSION                     	0x01
         #define DEFAULT_NAME			       	"app mg"
@@ -118,8 +118,8 @@ extern "C" {
 		#define DECODER_MIDI_KEYBOARD_EN	0
 		#define EXT_FLASH_EN				1
 		#define FM_EN						1
-		#define HAS_USB_EN					1
-		#define HAS_SDMMC_EN 				1
+		#define HAS_USB_EN					0
+		#define HAS_SDMMC_EN 				0
 
 		//emf config
 		#define APP_KEY_ENABLE				1

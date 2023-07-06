@@ -277,7 +277,7 @@ c_SRC_FILES := \
 	app/src/app_mg/record/app_record_key.c \
 
 
-ifeq ("aaa","aaa")
+ifeq ("aaa","bbb")
 c_SRC_FILES += \
 	app/bsp/common/usb/device/descriptor.c \
 	app/bsp/common/usb/device/hid.c \

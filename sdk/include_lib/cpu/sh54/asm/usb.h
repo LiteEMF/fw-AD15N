@@ -63,9 +63,9 @@
 
 /*CSR0 peripheral mode*/
 #define CSR0P_RxPktRdy           0x01
-#define CSR0P_TxPktRdy           0x02
+#define CSR0P_TxPktRdy           0x02           //in ACK
 #define CSR0P_SentStall          0x04
-#define CSR0P_DataEnd            0x08
+#define CSR0P_DataEnd            0x08           //in/out data end ack
 #define CSR0P_SetupEnd           0x10
 #define CSR0P_SendStall          0x20
 #define CSR0P_ClrRxPktRdy        0x40
@@ -221,9 +221,9 @@ void usb_write_devctl(const usb_dev usb_id, u32 value);
 u32 usb_read_csr0(const usb_dev usb_id);
 void usb_write_csr0(const usb_dev usb_id, u32 csr0);
 void usb_ep0_ClrRxPktRdy(const usb_dev usb_id);
-void usb_ep0_TxPktEnd(const usb_dev usb_id);
-void usb_ep0_RxPktEnd(const usb_dev usb_id);
-void usb_ep0_Set_Stall(const usb_dev usb_id);
+void usb_ep0_TxPktEnd(const usb_dev usb_id);        //0x0a
+void usb_ep0_RxPktEnd(const usb_dev usb_id);        //0x08
+void usb_ep0_Set_Stall(const usb_dev usb_id);       //0x20
 u32 usb_read_count0(const usb_dev usb_id);
 void usb_read_intre(const usb_dev usb_id,
                     u32 *const intr_usbe,

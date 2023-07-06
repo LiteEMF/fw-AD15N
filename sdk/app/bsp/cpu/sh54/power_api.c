@@ -199,7 +199,12 @@ void sys_power_down(u32 usec)
     }
 
     if (usb_otg_online(0) == HOST_MODE) {
+        #ifdef LITEEMF_ENABLED          //TODO
+        usb_h_resume(0);
+        #else
         usb_host_resume(0);
+        #endif
+
         usb_write_faddr(0, 8);
     }
 

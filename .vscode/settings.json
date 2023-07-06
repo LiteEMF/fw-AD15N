@@ -74,6 +74,15 @@
 		"otg.h": "c",
 		"usb.h": "c",
 		"device_drive.h": "c",
-		"irq.h": "c"
+		"irq.h": "c",
+		"usb_ctrl_transfer.h": "c",
+		"usb_std_class_def.h": "c",
+		"usb_device_mode.h": "c",
+		"decoder_api.h": "c",
+		"dac_api.h": "c",
+		"mbox_main.h": "c",
+		"msg.h": "c",
+		"usb_audio_interface.h": "c",
+		"usb_host.h": "c"
 	}
 }
