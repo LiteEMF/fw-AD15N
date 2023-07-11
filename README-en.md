@@ -1,7 +1,7 @@
 # fw-AD14N-AD15N-AC104N
 About Firmware for Generic MCU SDK（AD1x-457_AC104 series）, Support AD14N,AD15N,AC104N,AD17N
 
-[tag download]:https://github.com/Jieli-Tech/fw-AD15N/tags
+[tag download]:https://gitee.com/Jieli-Tech/fw-AD15N/tags
 [tag_badgen]:https://img.shields.io/github/v/tag/Jieli-Tech/fw-AD15N?style=plastic&labelColor=ffffff&color=informational&label=Tag&
 
 # fw-AD1x-457_AC104_SDK   [![tag][tag_badgen]][tag download]
