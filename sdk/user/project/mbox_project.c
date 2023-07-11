@@ -45,7 +45,7 @@
 **  Function
 ******************************************************************************************************/
 
-
+#if APP_RGB_ENABLE
 const uint8_t led_channel[] = {0, 1, 2, 3, 4, 5, 10, 11, 12};
 bool rgb_driver_show(uint8_t* frame, uint8_t size)
 {
@@ -72,6 +72,7 @@ bool rgb_driver_deinit(void)
 {
 	return true;
 }
+#endif
 
 #if API_USBH_BIT_ENABLE
 void usbh_class_itf_alt_select(uint8_t id,usbh_class_t* pclass)
@@ -166,6 +167,96 @@ void usbd_user_set_device_desc(uint8_t id, usb_desc_device_t *pdesc)
 			#endif
 		}
 	}
+}
+#include "dev_mg/device.h"
+
+
+static void *check_disk_status(u8 cur_lun)
+{
+    u32 ret;
+    u32 online_status;
+    static void *dev_fd = NULL;
+	static void *dev_handle = NULL;
+    void *pvfs = 0;
+
+    if (dev_online((char *)__EXT_FLASH_NANE)) {
+        if (dev_fd == NULL) {
+            dev_handle = dev_open(__EXT_FLASH_NANE, NULL);
+            if (NULL == dev_handle) {
+                logd("%s open fail %d\n", __EXT_FLASH_NANE, cur_lun);
+            }
+        } else {
+            //FIXME:need add device state check??
+        }
+        // if (get_cardreader_popup(cur_lun)) {		//TODO
+        //     return NULL;
+        // }
+    } else {
+        if (dev_fd) {
+            dev_close(dev_fd);
+            // recover_set_cardreader_popup(cur_lun); //TODO
+            dev_handle = NULL;
+        }
+    }
+
+    return dev_handle;
+}
+
+error_t usbd_msc_sector_read(uint8_t lun, uint32_t sector, uint32_t offset, uint8_t *buffer, uint32_t length)
+{
+    // out of ramdisk
+  	if ( sector >= USBD_DISK_BLOCK_NUM ) return ERROR_NO_MEM;
+	uint32_t err = 0;
+    uint16_t num = length/USBD_DISK_BLOCK_SIZE;
+    void *dev_fd = NULL;
+
+
+	dev_fd = check_disk_status(lun);
+	if (dev_fd) {
+		dev_ioctl(dev_fd, IOCTL_CMD_RESUME, 0);
+		err = dev_bulk_read(dev_fd, buffer, offset/USBD_DISK_BLOCK_SIZE, num);
+		dev_ioctl(dev_fd, IOCTL_CMD_SUSPEND, 0);
+		if (err == num) {
+
+		}else{
+			loge("msd flash read fail %d\n",err);
+			return ERROR_FAILE;
+		}
+	} else {
+		loge("msd flash read offline\n");
+		return ERROR_FAILE;
+	}
+
+    return ERROR_SUCCESS;
+
+}
+
+error_t usbd_msc_sector_write(uint8_t lun, uint32_t sector, uint32_t offset, uint8_t *buffer, uint32_t length)
+{
+    // out of ramdisk
+	if ( sector >= USBD_DISK_BLOCK_NUM ) return ERROR_NO_MEM;
+
+	uint32_t err = 0;
+    uint16_t num = length/USBD_DISK_BLOCK_SIZE;
+    void *dev_fd = NULL;
+
+	dev_fd = check_disk_status(lun);
+	if (dev_fd) {
+		dev_ioctl(dev_fd, IOCTL_CMD_RESUME, 0);
+		err = dev_bulk_write(dev_fd, buffer, offset/USBD_DISK_BLOCK_SIZE, num);
+		dev_ioctl(dev_fd, IOCTL_CMD_SUSPEND, 0);
+
+		if (err == num) {
+		}else{
+			loge("msd flash write fail %d\n",err);
+			return ERROR_FAILE;
+		}
+	} else {
+		loge("msd flash write offline\n");
+		return ERROR_FAILE;
+	}
+
+    return ERROR_SUCCESS;
 }
 
 #endif

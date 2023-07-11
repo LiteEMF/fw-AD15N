@@ -83,6 +83,11 @@
 		"mbox_main.h": "c",
 		"msg.h": "c",
 		"usb_audio_interface.h": "c",
-		"usb_host.h": "c"
+		"usb_host.h": "c",
+		"api_otg.h": "c",
+		"dev_manage.h": "c",
+		"msd.h": "c",
+		"device.h": "c",
+		"ui_common.h": "c"
 	}
 }

@@ -18,6 +18,9 @@
 #define LOG_CLI_ENABLE
 
 #include "log.h"
+
+#if HAS_USB_EN
+
 static void usb_device_init(const usb_dev usb_id)
 {
     usb_config(usb_id);
@@ -125,3 +128,4 @@ void usb_otg_sof_check_init(const usb_dev id)
     usb_sof_clr_pnd(id);
 }
 /* module_initcall(usb_device_mode); */
+#endif

@@ -24,6 +24,11 @@
 #endif
 #include "loudspeaker/loudspeaker_mode.h"
 
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#include "api/api_log.h"
+#endif
+
 #define LOG_TAG_CONST       NORM
 #define LOG_TAG             "[normal]"
 #include "log.h"
@@ -73,6 +78,7 @@ void app_timer_loop(void)
     }
 
 #ifdef USB_DEVICE_EN
+	#if !defined LITEEMF_ENABLED || (defined API_USBD_BIT_ENABLE && !API_USBD_BIT_ENABLE)
     if (0 == (cnt % 10)) {
         uac_inc_sync();
     }
@@ -80,6 +86,7 @@ void app_timer_loop(void)
     if (0 == (cnt % 500)) {
         uac_1s_sync();
     }
+	#endif
 #endif
 
     if (cnt >= 1000) {

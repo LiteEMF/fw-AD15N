@@ -112,7 +112,12 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #define TCFG_FLASH_SPI_TYPE_SELECT 		1//1:flash 选择硬件spi; 0:flash use soft_spi
 #define HW_SPI_WORK_MODE				SPI_MODE_BIDIR_1BIT
 #define SPI_READ_DATA_WIDTH				SPI_MODE_BIDIR_1BIT
+#ifndef SPI_CS_PORT_SEL
 #define SPI_CS_PORT_SEL					IO_PORTA_05
+#endif
+#ifndef SPI_GROUP_SEL
+#define SPI_GROUP_SEL SPI1_GROUPB_IO
+#endif
 //port select for soft spi
 #define A_CLK_BIT           			BIT(12)// set clk
 #define A_CLK_PORT(x)       			JL_PORTA->x
@@ -141,17 +146,31 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #endif
 
 /*---------USB Configuration---------------*/
+#if HAS_USB_EN
 #define TCFG_PC_ENABLE						ENABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE
 #define TCFG_USB_EXFLASH_UDISK_ENABLE       ENABLE  //外掛FLASH UDISK
-#define TCFG_UDISK_ENABLE					ENABLE 	 //U盘模块使能
+#define TCFG_UDISK_ENABLE					DISABLE 	 //U盘模块使能
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
 #define TCFG_AOA_ENABLE      				DISABLE
 #define TCFG_PUSH_CODE_ENABLE               DISABLE  //该功能需要关闭OTG使能
+#else
+#define TCFG_PC_ENABLE						DISABLE  //PC模块使能
+#define TCFG_USB_MSD_CDROM_ENABLE           DISABLE  //用于pc工具更新flash数据
+#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE  //外掛FLASH UDISK
+#define TCFG_UDISK_ENABLE					DISABLE  //U盘模块使能
+#define TCFG_HID_HOST_ENABLE				DISABLE
+#define TCFG_ADB_ENABLE      				DISABLE
+#define TCFG_AOA_ENABLE      				DISABLE
+#define TCFG_PUSH_CODE_ENABLE               DISABLE  //该功能需要关闭OTG使能
+#endif
 
 #define TCFG_USB_PORT_CHARGE                DISABLE
 #define TCFG_USB_DM_MULTIPLEX_WITH_SD_DAT0  DISABLE
+
+
+
 
 #if TCFG_PC_ENABLE
 #define USB_DEVICE_EN       //Enable USB SLAVE MODE

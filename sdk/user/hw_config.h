@@ -89,7 +89,7 @@ extern "C" {
 		#define ENCODER_EN					1
 		#define DECODER_MIDI_EN				0
 		#define DECODER_MIDI_KEYBOARD_EN	0
-		#define HAS_USB_EN					0
+		#define HAS_USB_EN					1
 		#define EXT_FLASH_EN				1
 		#define FM_EN						0
 		#define AUX_EN						1
@@ -99,7 +99,7 @@ extern "C" {
 		#define APP_KEY_ENABLE				1
 		#define API_TIMER_BIT_ENABLE 		BIT(0)
 
-		#define API_USBD_BIT_ENABLE			BIT(0)
+		#define API_USBD_BIT_ENABLE			0//BIT(0)
 		#define USBD_NUM					1
 		#define USBD_RAM_DISK_ENABLE		1
 		#define USBD_TYPE_SUPPORT 		(BIT_ENUM(DEV_TYPE_MSD))
@@ -116,18 +116,22 @@ extern "C" {
 		#define AUX_EN						1
 		#define DECODER_MIDI_EN				0
 		#define DECODER_MIDI_KEYBOARD_EN	0
-		#define EXT_FLASH_EN				1
+		#define EXT_FLASH_EN				1		
 		#define FM_EN						1
-		#define HAS_USB_EN					0
+		#define HAS_USB_EN					1		/*和API_USBD_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
 		#define HAS_SDMMC_EN 				0
 
 		//emf config
 		#define APP_KEY_ENABLE				1
 		#define API_TIMER_BIT_ENABLE 		BIT(0)
-
+		
+		#define API_OTG_BIT_ENABLE			0 //BIT(0)
 		#define API_USBD_BIT_ENABLE			0 //BIT(0)
 		#define USBD_NUM					1
 		#define USBD_TYPE_SUPPORT 			(BIT_ENUM(DEV_TYPE_MSD))
+		#define USBD_MSC_BLOCK_SIZE			512
+		#define USBD_DISK_BLOCK_SIZE		512
+		#define USBD_DISK_BLOCK_NUM	    	0X2000
 		// #define USBD_TYPE_SUPPORT 		(BIT_ENUM(DEV_TYPE_HID))
 		// #define USBD_HID_SUPPORT			(BIT_ENUM(HID_TYPE_KB) | BIT_ENUM(HID_TYPE_MOUSE) | BIT_ENUM(HID_TYPE_CONSUMER))
 		// #define USBD_HID_SUPPORT			(BIT_ENUM(HID_TYPE_KB))

@@ -9,6 +9,10 @@
 #include "dac_api.h"
 #include "decoder_api.h"
 #include "clock.h"
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#include "api/api_log.h"
+#endif
 
 #define LOG_TAG_CONST       NORM
 #define LOG_TAG             "[normal]"
@@ -55,8 +59,14 @@ void USB_devie_mode_loop(void)
     while (1) {
         msg = app_get_msg();
         bsp_loop();
-
+        #ifdef LITEEMF_ENABLED
+	    emf_handler(0);
+        #endif
+		
+		#if HAS_USB_EN
         USB_MassStorage(NULL);
+        #endif
+
         switch (msg) {
         case MSG_CHANGE_WORK_MODE:
             log_info(" MSG_CHANGE_WORK_MODE\n");
@@ -68,7 +78,7 @@ void USB_devie_mode_loop(void)
             usb_stop();
             return;
 
-#if (USB_DEVICE_CLASS_CONFIG&HID_CLASS)
+#if (USB_DEVICE_CLASS_CONFIG&HID_CLASS) && !defined LITEEMF_ENABLED
         case MSG_MUSIC_PREV_FILE:
             log_info("MSG_MUSIC_PREV_FILE\n");
             usb_hid_control(USB_AUDIO_PREFILE); //按下

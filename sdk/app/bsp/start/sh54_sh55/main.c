@@ -68,6 +68,13 @@ int c_main(int cfg_addr)
     SFR(JL_CLK->CON0, 19, 2, 3);
 
     system_init();
+
+    //init
+    #ifdef LITEEMF_ENABLED
+	emf_api_init();
+    emf_init();
+    #endif
+
     app();
     while (1) {
         wdt_clear();

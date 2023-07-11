@@ -48,7 +48,13 @@
 #define TCFG_FLASH_SPI_TYPE_SELECT 		1//1:flash 选择硬件spi; 0:flash use soft_spi
 #define HW_SPI_WORK_MODE				SPI_MODE_BIDIR_1BIT
 #define SPI_READ_DATA_WIDTH				SPI_MODE_BIDIR_1BIT
+#ifndef SPI_CS_PORT_SEL
 #define SPI_CS_PORT_SEL					IO_PORTA_05
+#endif
+#ifndef SPI_GROUP_SEL
+#define SPI_GROUP_SEL SPI1_GROUPB_IO
+#endif
+
 //port select for soft spi
 #define A_CLK_BIT           			BIT(12)// set clk
 #define A_CLK_PORT(x)       			JL_PORTA->x

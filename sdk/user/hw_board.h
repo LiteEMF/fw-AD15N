@@ -91,7 +91,7 @@ extern "C" {
 
 		// uart
 		#define HW_UART_MAP {\
-			{PA_04, PIN_NULL,	0, 0, (uint32_t)JL_UT0, VAL2FLD(UART_BAUD,1000000)},	\
+			{PA_07, PIN_NULL,	0, 0, (uint32_t)JL_UT0, VAL2FLD(UART_BAUD,1000000)},	\
 			{PA_09, PIN_NULL, 	0, 64, (uint32_t)NULL, VAL2FLD(UART_BAUD,1000000)|VAL2FLD(UART_PRI,1)},		\
 			}
 
@@ -108,6 +108,11 @@ extern "C" {
 		// #define HW_SPI_HOST_MAP {\
 		// 	{PB_07,PB_05,PB_06,PB_04,SPI1,VAL2FLD(SPI_BADU,1000)},	\
 		// 	}
+
+		//spi flash
+		#define SPI_CS_PORT_SEL			IO_PORTA_05
+		#define SPI_GROUP_SEL 			SPI1_GROUPB_IO
+
 
 		// pwm
 		// #define HW_PWM_MAP {	\

@@ -226,6 +226,23 @@ c_SRC_FILES := \
 	app/bsp/common/speaker/speak_api.c \
 	app/bsp/common/spi_soft/spi_soft.c \
 	app/bsp/common/uart_update/uart_update.c \
+	app/bsp/common/usb/device/descriptor.c \
+	app/bsp/common/usb/device/hid.c \
+	app/bsp/common/usb/device/msd.c \
+	app/bsp/common/usb/device/msd_upgrade.c \
+	app/bsp/common/usb/device/task_pc.c \
+	app/bsp/common/usb/device/uac1.c \
+	app/bsp/common/usb/device/uac_stream.c \
+	app/bsp/common/usb/device/usb_device.c \
+	app/bsp/common/usb/device/user_setup.c \
+	app/bsp/common/usb/host/usb_bulk_transfer.c \
+	app/bsp/common/usb/host/usb_ctrl_transfer.c \
+	app/bsp/common/usb/host/usb_host.c \
+	app/bsp/common/usb/host/usb_storage.c \
+	app/bsp/common/usb/usb_config.c \
+	app/bsp/common/usb/usb_host_config.c \
+	app/bsp/common/usb/usb_test.c \
+	app/bsp/common/usb/usr/usb_audio_interface.c \
 	app/bsp/common/vm/vm_api.c \
 	app/bsp/cpu/sh54/adc_drv.c \
 	app/bsp/cpu/sh54/clock.c \
@@ -277,26 +294,6 @@ c_SRC_FILES := \
 	app/src/app_mg/record/app_record_key.c \
 
 
-ifeq ("aaa","bbb")
-c_SRC_FILES += \
-	app/bsp/common/usb/device/descriptor.c \
-	app/bsp/common/usb/device/hid.c \
-	app/bsp/common/usb/device/msd.c \
-	app/bsp/common/usb/device/msd_upgrade.c \
-	app/bsp/common/usb/device/task_pc.c \
-	app/bsp/common/usb/device/uac1.c \
-	app/bsp/common/usb/device/uac_stream.c \
-	app/bsp/common/usb/device/usb_device.c \
-	app/bsp/common/usb/device/user_setup.c \
-	app/bsp/common/usb/host/usb_bulk_transfer.c \
-	app/bsp/common/usb/host/usb_ctrl_transfer.c \
-	app/bsp/common/usb/host/usb_host.c \
-	app/bsp/common/usb/host/usb_storage.c \
-	app/bsp/common/usb/usb_config.c \
-	app/bsp/common/usb/usb_host_config.c \
-	app/bsp/common/usb/usb_test.c \
-	app/bsp/common/usb/usr/usb_audio_interface.c 
-endif
 
 # add LiteEMF files 
 # 定义根目录

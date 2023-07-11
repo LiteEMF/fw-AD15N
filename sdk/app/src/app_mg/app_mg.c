@@ -162,12 +162,6 @@ void app(void)
         while (1);
     }
 
-    ///init
-    #ifdef LITEEMF_ENABLED
-    emf_api_init();
-    emf_init();
-    #endif
-
     #if APP_MODE_USB_EN
     app_mg_init(APP_USB, NULL);
     #else

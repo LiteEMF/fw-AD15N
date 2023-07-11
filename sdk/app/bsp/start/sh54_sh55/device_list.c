@@ -25,7 +25,11 @@
 #if (EXT_FLASH_EN)
 const struct spi_platform_data spi1_p_data = {
     .port = {
-         SPI1_GROUPB_IO
+        #ifdef SPI_GROUP_SEL 
+        SPI_GROUP_SEL
+        #else
+        SPI1_GROUPB_IO
+        #endif
     },
     .mode = HW_SPI_WORK_MODE,
     .clk = 10000000,

@@ -66,16 +66,16 @@ void usb_isr(const usb_dev id)
     intr_rx &= intr_rxe;
 
     if (intr_usb & INTRUSB_SUSPEND) {
-        logd("usb suspend\n");
+        logd("usbd suspend\n");
         usb_sie_close(id);
         usbd_suspend_event(id);
     }
     if (intr_usb & INTRUSB_RESET_BABBLE) {
-        logd("usb reset\n");
+        logd("usbd reset\n");
         usbd_reset_event(id);
     }
     if (intr_usb & INTRUSB_RESUME) {
-        logd("usb resume\n");
+        logd("usbd resume\n");
         usbd_resume_event(id);
     }
 
@@ -204,50 +204,28 @@ int usb_device_mode(const usb_dev usb_id, const u32 class)
 
 void usb_start()
 {
-    usb_device_mode(0, 1);
-
-#if USB_DEVICE_CLASS_CONFIG & MASSSTORAGE_CLASS
-    //没有复用时候判断 sd开关
-    //复用时候判断是否参与复用
-#ifdef SDMMCA_EN
-    msd_register_disk("sd0", NULL);
-#endif
-
-#ifdef SDMMCB_EN
-    msd_register_disk("sd1", NULL);
-#endif
-
-#if TCFG_USB_EXFLASH_UDISK_ENABLE
-    msd_register_disk(__EXT_FLASH_NANE, NULL);
-#endif
-
-#if TCFG_USB_MSD_CDROM_ENABLE
-    msd_register_disk("sfc", NULL); //默认介质为sfc
-#endif
-
-#endif
+    logi("usb start\n");
+    usbd_init(0);
 }
 
-void usb_pause()
-{
-    logi("usb pause");
-    usb_sie_disable(0);
-    usb_device_mode(0, 0);
-}
+// void usb_pause()
+// {
+//     logi("usb pause\n");
+//     usb_sie_disable(0);
+//     usb_device_mode(0, 0);
+// }
 
 void usb_stop()
 {
-    logi("App Stop - usb");
-    usb_pause();
-    if (usb_otg_online(0) == DISCONN_MODE) {
-        usb_sie_close(0);
-    }
+    logi("App Stop - usb\n");
+    usbd_deinit(0);
 }
 
 void usb_otg_sof_check_init(const usb_dev id)
 {
     u32 ep = 0;
 
+    logd("usb_otg_sof_check_init\n");
     usb_g_sie_init(id);
     usb_set_dma_raddr(id, 0, ep0_dma_buffer);
 

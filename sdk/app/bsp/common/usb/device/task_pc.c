@@ -17,7 +17,7 @@
 /* #include "os/os_api.h" */
 /* #include "device/sdmmc.h" */
 
-#if TCFG_PC_ENABLE
+#if HAS_USB_EN && TCFG_PC_ENABLE
 #include "usb/usb_config.h"
 #include "usb/device/usb_stack.h"
 
