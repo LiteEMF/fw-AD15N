@@ -19,7 +19,7 @@ extern "C" {
 #include "typedef.h"
 
 #define __STDBOOL_H         //杰里不调用stdbool
-// #define	_STDIO_H_			 //杰里不调用stdbio
+#define	_STDIO_H_			 //杰里不调用stdbio
 
 #ifdef __cplusplus
 }
