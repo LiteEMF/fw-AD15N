@@ -8,11 +8,13 @@ About Firmware for Generic MCU SDK（AD1x-457_AC104 series）, Support AD14N,AD1
 
 中文 | [EN](./README-en.md)
 
-AD14N-AD15N 系列通用MCU SDK 固件程序
+AD14N-AD15N-AD17N-AC104 系列通用MCU SDK 固件程序
 
 本仓库包含SDK release 版本代码，线下线上支持同步发布，支持玩具类产品和通用MCU类应用二次开发.
 
 本工程提供的例子，需要结合对应命名规则的库文件(lib.a) 和对应的子仓库进行编译.
+
+![Alt](jl_ad_chip.png)
 
 快速开始
 ------------
