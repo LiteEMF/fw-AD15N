@@ -23,7 +23,9 @@
 
 #define     USB_ROOT2   0
 
+#ifndef TCFG_OTG_USB_DEV_EN
 #define TCFG_OTG_USB_DEV_EN                 BIT(0)  //USB0 = BIT(0)  USB1 = BIT(1)
+#endif
 
 #ifdef AUDIO_PCM_DEBUG
 #undef TCFG_PC_ENABLE

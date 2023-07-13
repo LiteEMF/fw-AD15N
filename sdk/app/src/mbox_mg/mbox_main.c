@@ -47,6 +47,8 @@ static void mbox_sys_init(void)
         vm_write(VM_INDEX_SYSMODE, (u8 *)&work_mode, sizeof(work_mode));
     }
     playfile.given_device = NO_DEVICE;
+    // work_mode = 0;
+    log_info("work_mode = %d....",work_mode);
 }
 
 void work_mode_save(void)

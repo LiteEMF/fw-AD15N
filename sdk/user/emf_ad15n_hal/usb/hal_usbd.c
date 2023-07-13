@@ -40,7 +40,7 @@
 **	static Parameters
 *******************************************************************************************************/
 mem_buf_t usbd_mem_buf;
-uint8_t usbd_ep_buf[0x400]  __attribute__((aligned(8)));
+uint8_t usbd_ep_buf[0x200]  __attribute__((aligned(8)));
 static struct usb_ep_addr_t usb_ep_addr  SEC(.usb_config_var);
 static uint8_t ep0_dma_buffer[USBD_ENDP0_MTU + 4] __attribute__((aligned(4))) SEC(.usb_h_dma);
 static uint8_t* m_ep_pbuffer[USBD_ENDP_NUM][2];
@@ -451,9 +451,9 @@ error_t hal_usbd_out(uint8_t id, uint8_t ep, uint8_t* buf, uint16_t* plen)
 				*plen = usb_g_iso_read(id, ep, buf, *plen, 0);
 			}else if(TUSB_ENDP_TYPE_BULK == pclass->endpout.type ){
                 //logd("len =%d usbd_ep_buf=%x\n",*plen,(uint32_t)usbd_ep_buf);dumpd(usbd_ep_buf, 64);
-                usb_clr_intr_rxe(id, ep);
+                // usb_clr_intr_rxe(id, ep);
 				*plen = usb_g_bulk_read(id, ep, buf, *plen, 1);
-                usb_set_intr_rxe(id, ep);
+                // usb_set_intr_rxe(id, ep);
 			}else{
 				*plen = usb_g_intr_read(id, ep, buf, *plen, 0);
 			}

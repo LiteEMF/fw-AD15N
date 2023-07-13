@@ -149,7 +149,9 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #if HAS_USB_EN
 #define TCFG_PC_ENABLE						ENABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE
-#define TCFG_USB_EXFLASH_UDISK_ENABLE       ENABLE  //外掛FLASH UDISK
+#ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
+#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE   //外掛FLASH UDISK
+#endif
 #define TCFG_UDISK_ENABLE					DISABLE 	 //U盘模块使能
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
@@ -158,7 +160,9 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #else
 #define TCFG_PC_ENABLE						DISABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE  //用于pc工具更新flash数据
-#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE  //外掛FLASH UDISK
+#ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
+#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE   //外掛FLASH UDISK
+#endif
 #define TCFG_UDISK_ENABLE					DISABLE  //U盘模块使能
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
@@ -171,6 +175,9 @@ flash厂家联系评估写的频率是否是产品安全范围。
 
 
 
+#ifndef TCFG_OTG_USB_DEV_EN
+#define TCFG_OTG_USB_DEV_EN                 BIT(0)//USB0 = BIT(0)  USB1 = BIT(1)
+#endif
 
 #if TCFG_PC_ENABLE
 #define USB_DEVICE_EN       //Enable USB SLAVE MODE
@@ -179,18 +186,20 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #define	USB_DISK_EN        //是否可以读U盘
 #endif
 
-#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
 #include "usb_std_class_def.h"
 #include "usb_common_def.h"
+#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
 
 #undef USB_DEVICE_CLASS_CONFIG
-#define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS|SPEAKER_CLASS|MIC_CLASS|HID_CLASS)  //配置usb从机模式支持的class
+#define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS)  //配置usb从机模式支持的class
 
 #undef TCFG_OTG_MODE
 #define TCFG_OTG_MODE                       (TCFG_OTG_MODE_HOST|TCFG_OTG_MODE_SLAVE|TCFG_OTG_MODE_CHARGE|OTG_DET_DP_ONLY)
 #else
 #define  USB_DEVICE_CLASS_CONFIG            0
+#ifndef TCFG_OTG_MODE
 #define TCFG_OTG_MODE                       0
+#endif
 #endif
 
 #if TCFG_PUSH_CODE_ENABLE

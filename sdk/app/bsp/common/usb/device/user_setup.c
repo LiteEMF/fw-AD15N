@@ -16,7 +16,7 @@
 #define LOG_CLI_ENABLE
 #include "log.h"
 
-#if TCFG_PC_ENABLE
+#if HAS_USB_EN && TCFG_PC_ENABLE
 static const u8 user_stirng[] = {
     24,
     0x03,

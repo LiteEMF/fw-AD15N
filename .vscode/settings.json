@@ -88,6 +88,10 @@
 		"dev_manage.h": "c",
 		"msd.h": "c",
 		"device.h": "c",
-		"ui_common.h": "c"
+		"ui_common.h": "c",
+		"norflash.h": "c",
+		"atomic.h": "c",
+		"spi1.h": "c",
+		"log.h": "c"
 	}
 }

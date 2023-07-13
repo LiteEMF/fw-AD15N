@@ -34,7 +34,7 @@
 *******************************************************************/
 void* hal_malloc(uint32_t size)
 {
-	return my_malloc(size,MM_NONE);	//TODO
+	return my_malloc(size,MM_USER);	//TODO
 }
 
 /*******************************************************************

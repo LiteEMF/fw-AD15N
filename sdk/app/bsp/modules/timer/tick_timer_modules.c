@@ -36,7 +36,7 @@ void modules_tick_timer(u32 cnt)
     }
 
     if (0 == (cnt % 125)) { //250ms
-#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
+#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE || defined LITEEMF_ENABLED
         void usb_hotplug_detect(void *argv);
         usb_hotplug_detect(NULL);
 #endif

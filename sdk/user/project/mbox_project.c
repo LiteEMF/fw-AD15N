@@ -169,7 +169,7 @@ void usbd_user_set_device_desc(uint8_t id, usb_desc_device_t *pdesc)
 	}
 }
 #include "dev_mg/device.h"
-
+#define DISK_ASYNC
 
 static void *check_disk_status(u8 cur_lun)
 {
@@ -202,6 +202,19 @@ static void *check_disk_status(u8 cur_lun)
     return dev_handle;
 }
 
+error_t usbd_msc_sector_erase_chip(uint8_t lun)
+{
+	error_t err;
+	void *dev_fd = check_disk_status(lun);
+	if (!dev_fd) {
+		logd("IOCTL_ERASE_CHIP err");
+		return ERROR_FAILE;
+	}
+	err = dev_ioctl(dev_fd, IOCTL_ERASE_CHIP, 0);
+	logd("IOCTL_ERASE_CHIP=%d",err);
+	return err;
+}
+
 error_t usbd_msc_sector_read(uint8_t lun, uint32_t sector, uint32_t offset, uint8_t *buffer, uint32_t length)
 {
     // out of ramdisk
@@ -213,13 +226,19 @@ error_t usbd_msc_sector_read(uint8_t lun, uint32_t sector, uint32_t offset, uint
 
 	dev_fd = check_disk_status(lun);
 	if (dev_fd) {
+		#ifdef DISK_ASYNC
+		dev_ioctl(dev_fd, IOCTL_SET_ASYNC_MODE, 0);
+		err = dev_bulk_read(dev_fd, buffer, sector, num);
+		#else
 		dev_ioctl(dev_fd, IOCTL_CMD_RESUME, 0);
-		err = dev_bulk_read(dev_fd, buffer, offset/USBD_DISK_BLOCK_SIZE, num);
+		err = dev_bulk_read(dev_fd, buffer, sector, num);
 		dev_ioctl(dev_fd, IOCTL_CMD_SUSPEND, 0);
-		if (err == num) {
+		#endif
 
+		if (err == num) {
+			// loge("msd flash read lab=%d, num=%d,%d\n",sector, num, err);
 		}else{
-			loge("msd flash read fail %d\n",err);
+			loge("msd flash read fail lab=%d, num=%d,%d\n",sector, num, err);
 			return ERROR_FAILE;
 		}
 	} else {
@@ -242,13 +261,26 @@ error_t usbd_msc_sector_write(uint8_t lun, uint32_t sector, uint32_t offset, uin
 
 	dev_fd = check_disk_status(lun);
 	if (dev_fd) {
-		dev_ioctl(dev_fd, IOCTL_CMD_RESUME, 0);
-		err = dev_bulk_write(dev_fd, buffer, offset/USBD_DISK_BLOCK_SIZE, num);
-		dev_ioctl(dev_fd, IOCTL_CMD_SUSPEND, 0);
+		if(length){
+			#ifdef DISK_ASYNC
+			dev_ioctl(dev_fd, IOCTL_SET_ASYNC_MODE, 0);
+			err = dev_bulk_write(dev_fd, buffer, sector, num);
+			#else
+			dev_ioctl(dev_fd, IOCTL_CMD_RESUME, 0);
+			err = dev_bulk_write(dev_fd, buffer, sector, num);
+			dev_ioctl(dev_fd, IOCTL_CMD_SUSPEND, 0);
+			#endif
+		}else{
+			//async mode last block flush
+			#ifdef DISK_ASYNC
+        	dev_ioctl(dev_fd, IOCTL_FLUSH, 0);
+			#endif
+		}
 
 		if (err == num) {
+			// loge("msd flash write lab=%d, num=%d,%d\n",sector, num, err);
 		}else{
-			loge("msd flash write fail %d\n",err);
+			loge("msd flash write fail lab=%d, num=%d,%d\n",sector, num, err);
 			return ERROR_FAILE;
 		}
 	} else {
@@ -302,6 +334,8 @@ void user_vender_init(void)
         app_rgb_set_blink(i, Color_White, BLINK_SLOW);
     }
 	#endif
+
+	//usbd_msc_sector_erase_chip(0);
 	
 }
 void user_vender_deinit(void)			//关机前deinit
