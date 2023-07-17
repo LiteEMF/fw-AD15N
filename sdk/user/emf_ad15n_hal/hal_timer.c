@@ -16,7 +16,7 @@
 #include "hw_board.h"
 #if	defined HW_TIMER_MAP && API_TIMER_BIT_ENABLE
 #include  "api/api_timer.h"
-
+#include  "api/api_tick.h"
 #include "sfr.h"
 #include "cpu.h"
 #include "config.h"
@@ -34,7 +34,6 @@
 /******************************************************************************************************
 **	public Parameters
 *******************************************************************************************************/
-u32 mSysTick;
 
 /*****************************************************************************************************
 **	static Function
@@ -72,7 +71,6 @@ static void timer0_isr(void)
     uint8_t id = get_timer_id(0);   
     TIMER_SFR(0)->CON |= BIT(6);
     api_timer_hook(id);  
-    mSysTick++;
 }
 #endif
 

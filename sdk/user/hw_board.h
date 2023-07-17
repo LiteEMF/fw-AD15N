@@ -86,6 +86,9 @@ extern "C" {
 		// 	{PA_05,0,VAL2FLD(PWM_FREQ,200000)|VAL2FLD(PWM_CH,1)|VAL2FLD(PWM_ACTIVE,0)},		\
 		// 	}
 	#elif MBOX
+
+		#define KEY_POWER_GPIO 		PA_04
+
 		// timer
 		#define HW_TIMER_MAP {\
 			{0, VAL2FLD(TIMER_FREQ,1000)|VAL2FLD(TIMER_CH,0)|VAL2FLD(TIMER_PRI,1)},	}

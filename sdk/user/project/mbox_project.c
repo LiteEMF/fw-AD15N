@@ -45,6 +45,14 @@
 **  Function
 ******************************************************************************************************/
 
+void api_timer_hook(uint8_t id)
+{
+    if(0 == id){
+        m_systick++;
+        m_task_tick10us +=100;
+    }
+}
+
 #if APP_RGB_ENABLE
 const uint8_t led_channel[] = {0, 1, 2, 3, 4, 5, 10, 11, 12};
 bool rgb_driver_show(uint8_t* frame, uint8_t size)
