@@ -43,7 +43,6 @@
 //SPI1: B组IO: IO_PORTA_14, IO_PORTA_15, IO_PORTA_13,
 //SPI1: C组IO: IO_PORTA_06, IO_PORTA_07, IO_PORTA_08,
 //SPI1: D组IO: IO_PORTB_08, IO_PORTB_09, IO_PORTB_07
-struct spi_platform_data spi1_p_data;
 /*****************************************************************************************************
 **	static Function
 ******************************************************************************************************/
@@ -107,18 +106,20 @@ bool hal_spi_host_isr_read(uint8_t id,uint16_t addr, uint8_t * buf, uint16_t len
 }
 bool hal_spi_host_init(uint8_t id)
 {
+	uint32_t badu = SPI_BADU_ATT(id) * 1000;
+
 	spi1_p_data.port[0] = m_spi_map[id].clk;
 	spi1_p_data.port[1] = m_spi_map[id].mosi;
 	spi1_p_data.port[2] = m_spi_map[id].miso;
-	spi1_p_data.mode = SPI_MODE_BIDIR_1BIT;
-	spi1_p_data.clk = SPI_BADU_ATT(id);
+	spi1_p_data.mode = SPI_MODE_ATT(id);
+	spi1_p_data.clk = badu;
 	spi1_p_data.role = SPI_ROLE_MASTER;
 
-	return !spi_open(SPI1);
+	return !spi_open(m_spi_map[id].peripheral);
 }
 bool hal_spi_host_deinit(uint8_t id)
 {
-	spi_close(SPI1);
+	spi_close(m_spi_map[id].peripheral);
 	return true;
 }
 #endif

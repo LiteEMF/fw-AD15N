@@ -15,6 +15,10 @@
 #include "key.h"
 #include "eq.h"
 #include "music_auto_save_bp.h"
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#include "api/api_log.h"
+#endif
 
 #define LOG_TAG_CONST       NORM
 #define LOG_TAG             "[normal]"
@@ -194,13 +198,17 @@ void music_app_loop(void)
 {
     u8 res;
     bool bres;
-    u32 temp_jiffies = jiffies;;
+    u32 temp_jiffies = jiffies;
     dac_mute(0);
 
     while (1) {
         u16 key;
         key = app_get_msg();
         bsp_loop();
+
+        #ifdef LITEEMF_ENABLED
+        emf_handler(0);
+        #endif
 
         switch (key) {
         case MSG_CHANGE_WORK_MODE:

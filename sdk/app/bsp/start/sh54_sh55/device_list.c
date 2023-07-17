@@ -32,7 +32,7 @@ const struct spi_platform_data spi1_p_data = {
         #endif
     },
     .mode = HW_SPI_WORK_MODE,
-    .clk = 10000000,
+    .clk = 20000000,
     .role = SPI_ROLE_MASTER,
 };
 //norflash

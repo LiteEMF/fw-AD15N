@@ -141,7 +141,7 @@ extern "C" {
 		#define API_OTG_BIT_ENABLE			BIT(0)
 		#define API_USBH_BIT_ENABLE			0
 
-		#define API_USBD_BIT_ENABLE			BIT(0)
+		#define API_USBD_BIT_ENABLE			0
 		#define USBD_NUM					1
 		#define USBD_TYPE_SUPPORT 			(BIT_ENUM(DEV_TYPE_MSD))
 		#define USBD_MSC_BLOCK_SIZE			512
@@ -160,7 +160,7 @@ extern "C" {
 		#define DECODER_MIDI_KEYBOARD_EN	0
 		#define EXT_FLASH_EN				1		
 		#define FM_EN						0
-		#define HAS_USB_EN					0		/*和API_USBD_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
+		#define HAS_USB_EN					1		/*和API_USBD_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
 		#define HAS_SDMMC_EN 				0
 		#define TCFG_USB_EXFLASH_UDISK_ENABLE       1   /*外掛FLASH UDISK*/
 		

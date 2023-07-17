@@ -16,6 +16,7 @@
 #include "hw_board.h"
 #ifdef HW_UART_MAP
 
+#include  "api/api_system.h"
 #include  "api/api_uart.h"
 #include  "api/api_gpio.h"
 #include "config.h"
@@ -91,7 +92,7 @@ bool hal_uart_init(uint8_t id,uint32_t baudrate)
 
     if(UART_DEBUG_ID == id)
     {
-        if (FALSE == libs_debug) 
+        if (FALSE == LOG_ENABLE) 
         {
             return true;
         }
@@ -119,7 +120,17 @@ bool hal_uart_init(uint8_t id,uint32_t baudrate)
             JL_PORTA->DIE |= BIT(4) | BIT(5);
         }
         else{
-            gpio_output_channle(m_uart_map[id].tx, CH1_UT0_TX);//io选择--->设置输出通道
+            if((Map_Port & 0x80) == 0x00)
+            {
+                gpio_output_channle(m_uart_map[id].tx, CH1_UT0_TX);//io选择--->设置输出通道
+                SFR(Map_Port, 3, 3, 4);
+                Map_Port |= 0x80;
+                logd("Map_Port:0x%x",Map_Port);
+                logd("IOMC3:0x%x",JL_IOMC->IOMC3);
+            }
+            else{
+                logd("UART0 MAP ERROR!\n");
+            }
         }
         JL_UT0_TypeDef *uart0 = (JL_UT0_TypeDef*)m_uart_map[id].peripheral;
         uart0->BAUD = clk_get("uart") / baudrate / 4 - 1;
@@ -154,6 +165,13 @@ bool hal_uart_deinit(uint8_t id)
 		api_gpio_dir(m_uart_map[id].tx,PIN_IN, PIN_PULLNONE);
 		api_gpio_dir(m_uart_map[id].rx, PIN_IN,PIN_PULLNONE);
 		uart_bus[id] = NULL;
+        if(UART_DEBUG_ID == id)
+        {
+            if((Map_Port & 0xb8) == 0xa0)
+            {
+                Map_Port &= 0x7F;
+            }
+        }
 	}
 	return false;
 }

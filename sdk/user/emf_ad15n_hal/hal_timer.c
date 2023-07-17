@@ -34,6 +34,7 @@
 /******************************************************************************************************
 **	public Parameters
 *******************************************************************************************************/
+u32 mSysTick;
 
 /*****************************************************************************************************
 **	static Function
@@ -45,9 +46,10 @@
  *timer
  * */
 #define _timer_init(ch,us)  \
-    HWI_Install(IRQ_TIME##ch##_IDX, (u32)timer##ch##_isr, 0); 	\
-	TIMER_SFR(ch)->PRD = clk_get("lsb")/1000000 * (us);			\
-	TIMER_SFR(ch)->CON = BIT(0)|BIT(6);
+    HWI_Install(IRQ_TIME##ch##_IDX, (u32)timer##ch##_isr, 4); 	\
+	TIMER_SFR(ch)->PRD = clk_get("lsb")/4000000 * (us);			\
+    TIMER_SFR(ch)->CON = BIT(0)<<4;               /* 4分频*/    \
+	TIMER_SFR(ch)->CON |= BIT(0)|BIT(6);
 
 
 
@@ -69,10 +71,8 @@ static void timer0_isr(void)
 {
     uint8_t id = get_timer_id(0);   
     TIMER_SFR(0)->CON |= BIT(6);
-    JL_PORTA->DIR &= ~BIT(4);
-    JL_PORTA->DIE |= BIT(4);
-    JL_PORTA->OUT ^= BIT(4);
     api_timer_hook(id);  
+    mSysTick++;
 }
 #endif
 
@@ -93,6 +93,9 @@ static void timer2_isr(void)
     uint8_t id = get_timer_id(2);   
     TIMER_SFR(2)->CON |= BIT(6);
     api_timer_hook(id);  
+    // JL_PORTA->DIR &= ~BIT(12);
+    // JL_PORTA->DIE |= BIT(12);
+    // JL_PORTA->OUT ^= BIT(12);
 }
 #endif
 
@@ -132,8 +135,8 @@ static void timer_init(u8 timer_ch, u32 us)
 *******************************************************************/
 bool hal_timer_init(uint8_t id)
 {
-	uint32_t period_us = 1000000 / TIMER_FREQ_ATT(id);
-	timer_init(id, period_us);
+	uint32_t chanel = TIMER_CH_ATT(id);
+	timer_init(chanel, TIMER_FREQ_ATT(id));
 	return true;
 }
 bool hal_timer_deinit(uint8_t id)
