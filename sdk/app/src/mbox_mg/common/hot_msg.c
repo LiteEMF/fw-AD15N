@@ -15,6 +15,10 @@
 #include "usb/host/usb_host.h"
 #include "usb/device/usb_stack.h"
 #include "sdmmc/sd_host_api.h"
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#include "api/api_log.h"
+#endif
 
 #define LOG_TAG_CONST       NORM
 #define LOG_TAG             "[normal]"
@@ -81,8 +85,10 @@ void ap_handle_hotkey(u16 key)
         }
         dac_mute_toggle();
         break;
-
-#ifdef USB_DISK_EN
+#if defined LITEEMF_ENABLED && API_OTG_BIT_ENABLE
+    case MSG_USB_DISK_OUT:
+        usbh_det_event(0, 0);
+#elif defined USB_DISK_EN
     case MSG_USB_DISK_OUT:
         log_info("udisk out");
         usb_host_unmount(0);
@@ -161,7 +167,11 @@ void ap_handle_hotkey(u16 key)
         break;
 #endif
 
-#ifdef USB_DISK_EN
+#if defined LITEEMF_ENABLED && API_OTG_BIT_ENABLE
+    case MSG_USB_DISK_IN:
+        usbh_det_event(0, 1);
+
+#elif defined USB_DISK_EN
     case MSG_USB_DISK_IN  :
         log_info("udisk in");
         usb_host_mount(0, 3, 20, 200); //
@@ -230,6 +240,11 @@ void ap_handle_hotkey(u16 key)
 
         input_number = input_number * 10 + key;
         UI_menu(MENU_INPUT_NUMBER);
+        break;
+    case NO_MSG:
+        break;
+    default:
+        log_info("hotkey:%d \n", key);
         break;
     }
 }

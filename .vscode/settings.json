@@ -92,6 +92,12 @@
 		"norflash.h": "c",
 		"atomic.h": "c",
 		"spi1.h": "c",
-		"log.h": "c"
+		"log.h": "c",
+		"usbh_class.h": "c",
+		"usbh_core.h": "c",
+		"api_flash.h": "c",
+		"scsi.h": "c",
+		"usbd_core.h": "c",
+		"*.ld": "c"
 	}
 }

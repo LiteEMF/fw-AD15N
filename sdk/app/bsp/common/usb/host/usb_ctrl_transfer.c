@@ -21,7 +21,7 @@
 #define LOG_CLI_ENABLE
 #include "log.h"
 
-#if TCFG_UDISK_ENABLE || TCFG_ADB_ENABLE ||TCFG_AOA_ENABLE || TCFG_PUSH_CODE_ENABLE
+#if HAS_USB_EN && (TCFG_UDISK_ENABLE || TCFG_ADB_ENABLE ||TCFG_AOA_ENABLE || TCFG_PUSH_CODE_ENABLE)
 
 static void ep0_h_isr(struct usb_host_device *host_dev, u32 ep)
 {

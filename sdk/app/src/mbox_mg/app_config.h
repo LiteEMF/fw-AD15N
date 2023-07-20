@@ -152,18 +152,24 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
 #define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE   //外掛FLASH UDISK
 #endif
+#ifndef TCFG_UDISK_ENABLE
 #define TCFG_UDISK_ENABLE					DISABLE 	 //U盘模块使能
+#endif
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
 #define TCFG_AOA_ENABLE      				DISABLE
 #define TCFG_PUSH_CODE_ENABLE               DISABLE  //该功能需要关闭OTG使能
+
 #else
+
 #define TCFG_PC_ENABLE						DISABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE  //用于pc工具更新flash数据
 #ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
 #define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE   //外掛FLASH UDISK
 #endif
+#ifndef TCFG_UDISK_ENABLE
 #define TCFG_UDISK_ENABLE					DISABLE  //U盘模块使能
+#endif
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
 #define TCFG_AOA_ENABLE      				DISABLE

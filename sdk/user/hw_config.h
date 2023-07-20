@@ -139,9 +139,12 @@ extern "C" {
 		#define API_TIMER_BIT_ENABLE 		BIT(0)
 		
 		#define API_OTG_BIT_ENABLE			0 //BIT(0)
-		#define API_USBH_BIT_ENABLE			0
 
-		#define API_USBD_BIT_ENABLE			0 //BIT(0)
+		#define API_USBH_BIT_ENABLE			0 //BIT(0)
+		#define USBH_TYPE_SUPPORT			(BIT_ENUM(DEV_TYPE_HID) | BIT_ENUM(DEV_TYPE_HUB))
+		#define USBH_HID_SUPPORT			(BIT_ENUM(HID_TYPE_KB) | BIT_ENUM(HID_TYPE_MOUSE) | BIT_ENUM(HID_TYPE_CONSUMER))
+
+		#define API_USBD_BIT_ENABLE			0// BIT(0)
 		#define USBD_NUM					1
 		#define USBD_TYPE_SUPPORT 			(BIT_ENUM(DEV_TYPE_MSD))
 		#define USBD_MSC_BLOCK_SIZE			512
@@ -163,6 +166,7 @@ extern "C" {
 		#define HAS_USB_EN					1		/*和 API_OTG_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
 		#define HAS_SDMMC_EN 				0
 		#define TCFG_USB_EXFLASH_UDISK_ENABLE       1   /*外掛FLASH UDISK*/
+		#define TCFG_UDISK_ENABLE			0			/*支持usb盘功能*/
 		
 		#if API_OTG_BIT_ENABLE
 			#define TCFG_OTG_USB_DEV_EN     API_OTG_BIT_ENABLE
@@ -172,11 +176,11 @@ extern "C" {
 			#endif
 
 			#if API_USBD_BIT_ENABLE && API_USBH_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE | OTG_CHARGE_MODE | OTG_DET_DP_ONLY
+				#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
 			#elif API_USBD_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_SLAVE_MODE | OTG_CHARGE_MODE | OTG_DET_DP_ONLY
+				#define TCFG_OTG_MODE       OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
 			#elif API_USBH_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_CHARGE_MODE | OTG_DET_DP_ONLY
+				#define TCFG_OTG_MODE       OTG_HOST_MODE  | OTG_DET_DP_ONLY
 			#else
 				#define TCFG_OTG_MODE       0
 			#endif

@@ -13,12 +13,11 @@
 **	Description:	
 ************************************************************************************************************/
 #include "hw_config.h"
-#if API_USBD_BIT_ENABLE
 #include  "api/api_system.h"
 #include  "api/usb/usb_typedef.h"
 #include "api/usb/device/usbd.h"
 
-
+#if API_USBD_BIT_ENABLE
 
 #include "irq.h"
 #include "gpio.h"
@@ -536,6 +535,24 @@ error_t hal_usbd_deinit(uint8_t id)
         usb_sie_close(0);
     }
 	return ERROR_SUCCESS;
+}
+#elif API_OTG_BIT_ENABLE
+#include "usb/usb_phy.h"
+#include "api/api_log.h"
+
+static uint8_t ep0_dma_buffer[USBD_ENDP0_MTU + 4] __attribute__((aligned(4))) SEC(.usb_h_dma);
+void usb_otg_sof_check_init(const usb_dev id)
+{
+    u32 ep = 0;
+
+    logd("usb_otg_sof_check_init\n");
+    usb_g_sie_init(id);
+    usb_set_dma_raddr(id, 0, ep0_dma_buffer);
+
+    for (ep = 1; ep < USBD_ENDP_NUM; ep++) {
+        usb_disable_ep(id, ep);
+    }
+    usb_sof_clr_pnd(id);
 }
 
 #endif
