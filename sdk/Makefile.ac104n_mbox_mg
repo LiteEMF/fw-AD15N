@@ -116,7 +116,7 @@ DEFINES := \
 	-DHAS_MIDI_DECODER \
 	-DHAS_A_DECODER \
 	-DHAS_SPEED_EN \
-	-DEXT_FLASH_EN=1 \
+	-DHAS_EXT_FLASH_EN \
 	-DHAS_FM_EN \
 	-DHAS_USB_EN=1 \
 	-DHAS_SDMMC_EN \
@@ -233,7 +233,6 @@ c_SRC_FILES := \
 	app/bsp/common/key/key_touch.c \
 	app/bsp/common/msg/msg.c \
 	app/bsp/common/norflash/norflash.c \
-	app/bsp/common/norflash/ini_area_norflash.c \
 	app/bsp/common/power_manage/app_power_mg.c \
 	app/bsp/common/reserved_area/reserved_area.c \
 	app/bsp/common/rtc/rtc.c \

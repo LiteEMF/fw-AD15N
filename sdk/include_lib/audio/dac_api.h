@@ -2,6 +2,7 @@
 #define __DAC_API_H__
 #include "typedef.h"
 #include "dac.h"
+#include "app_modules.h"
 //#include "typedef.h"
 
 typedef enum {

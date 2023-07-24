@@ -11,8 +11,10 @@
 * 下载项目git命令行下载 `git clone https://github.com/LiteEMF/fw-AD15N.git`
 * 更新LiteEMF子模块命令行输入: `git submodule init`  `git submodule update`
 * 安装杰里编译环境[方法](#env)
-* vscode 打开代码, vscode -- 终端 -- 运行任务 -- ad14n_LiteEMF 进行编译
+* 在fw-AD15N/sdk/ 目录下vscode 打开代码, vscode -- 终端 -- 运行任务 -- ad14n_LiteEMF 进行编译
 * hw_confg.h,hw_board.h文件添加或修改自己的硬件和工程
+
+
 
 # fw-AD14N-AD15N-AC104N-AD17N
 About Firmware for Generic MCU SDK（AD1x-457_AC104 series）, Support AD14N,AD15N,AC104N,AD17N

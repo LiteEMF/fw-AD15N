@@ -14,13 +14,21 @@
 # make ad15n_mcu
 # make ad17n_mcu
 
-.PHONY: all clean ad15n_voice_toy ad17n_voice_toy ad14n_mcu ad14n_voice_toy ac104n_mbox_mg ad15n_mcu ad17n_mcu clean_ad15n_voice_toy clean_ad17n_voice_toy clean_ad14n_mcu clean_ad14n_voice_toy clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad17n_mcu
+.PHONY: all clean ac104n_mbox_LiteEMF clean_ac104n_mbox_LiteEMF ad15n_voice_toy ad17n_voice_toy ad14n_mcu ad14n_voice_toy ac104n_mbox_mg ad15n_mcu ad17n_mcu clean_ad15n_voice_toy clean_ad17n_voice_toy clean_ad14n_mcu clean_ad14n_voice_toy clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad17n_mcu
 
-all: ad15n_voice_toy ad17n_voice_toy ad14n_mcu ad14n_voice_toy ac104n_mbox_mg ad15n_mcu ad17n_mcu
+all: ac104n_mbox_LiteEMF ad15n_voice_toy ad17n_voice_toy ad14n_mcu ad14n_voice_toy ac104n_mbox_mg ad15n_mcu ad17n_mcu
 	@echo +ALL DONE
 
-clean: clean_ad15n_voice_toy clean_ad17n_voice_toy clean_ad14n_mcu clean_ad14n_voice_toy clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad17n_mcu
+clean: clean_ac104n_mbox_LiteEMF clean_ad15n_voice_toy clean_ad17n_voice_toy clean_ad14n_mcu clean_ad14n_voice_toy clean_ac104n_mbox_mg clean_ad15n_mcu clean_ad17n_mcu
 	@echo +CLEAN DONE
+
+
+ac104n_mbox_LiteEMF:
+	$(MAKE) -C . -f Makefile.ac104n_mbox_LiteEMF
+
+clean_ac104n_mbox_LiteEMF:
+	$(MAKE) -C . -f Makefile.ac104n_mbox_LiteEMF clean
+
 
 ad15n_voice_toy:
 	$(MAKE) -C . -f Makefile.ad15n_voice_toy

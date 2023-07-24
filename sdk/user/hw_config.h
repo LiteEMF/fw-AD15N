@@ -102,33 +102,15 @@ extern "C" {
 
 
 		//AD14 CONFIG
-		#define ENCODER_EN					1
+		#define HAS_USB_EN					1		/*和 API_OTG_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
+		#define LINEIN_MODE_EN				0
 		#define DECODER_MIDI_EN				0
 		#define DECODER_MIDI_KEYBOARD_EN	0
-		#define HAS_USB_EN					1
-		#define EXT_FLASH_EN				1
+		#define EXT_FLASH_EN				1		
 		#define FM_EN						0
-		#define AUX_EN						1
-		#define HAS_SDMMC_EN 				0
+		#define TFG_SD_EN	 				0
 		#define TCFG_USB_EXFLASH_UDISK_ENABLE       1   /*外掛FLASH UDISK*/
-
-		#if API_OTG_BIT_ENABLE
-			#define TCFG_OTG_USB_DEV_EN     API_OTG_BIT_ENABLE
-
-			#if API_USBD_BIT_ENABLE			//Enable USB SLAVE MODE
-			#define USB_DEVICE_EN       
-			#endif
-
-			#if API_USBD_BIT_ENABLE && API_USBH_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE | OTG_CHARGE_MODE | OTG_DET_DP_ONLY
-			#elif API_USBD_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_SLAVE_MODE | OTG_CHARGE_MODE | OTG_DET_DP_ONLY
-			#elif API_USBH_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_CHARGE_MODE | OTG_DET_DP_ONLY
-			#else
-				#define TCFG_OTG_MODE       0
-			#endif
-		#endif
+		#define TCFG_UDISK_ENABLE			0			/*支持usb盘功能*/
 
 		#define SW_VERSION                     	0x01
         #define DEFAULT_NAME			       	"app mg"
@@ -139,7 +121,6 @@ extern "C" {
 		#define API_TIMER_BIT_ENABLE 		BIT(0)
 		
 		#define API_OTG_BIT_ENABLE			0 //BIT(0)
-
 		#define API_USBH_BIT_ENABLE			0 //BIT(0)
 		#define USBH_TYPE_SUPPORT			(BIT_ENUM(DEV_TYPE_HID) | BIT_ENUM(DEV_TYPE_HUB))
 		#define USBH_HID_SUPPORT			(BIT_ENUM(HID_TYPE_KB) | BIT_ENUM(HID_TYPE_MOUSE) | BIT_ENUM(HID_TYPE_CONSUMER))
@@ -156,35 +137,17 @@ extern "C" {
 
 		
 		//SDK CONFIG
-		#define D_MBOX_SDK					1	
-		#define D_APP_MBOX					1
-		#define AUX_EN						1
+		// #define D_MBOX_SDK
+		// #define D_APP_MBOX	
+		#define HAS_USB_EN					1		/*和 API_OTG_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
+		#define LINEIN_MODE_EN				1
 		#define DECODER_MIDI_EN				0
 		#define DECODER_MIDI_KEYBOARD_EN	0
 		#define EXT_FLASH_EN				1		
 		#define FM_EN						0
-		#define HAS_USB_EN					1		/*和 API_OTG_BIT_ENABLE 选择使用杰里内部还是LiteEMFusb*/
-		#define HAS_SDMMC_EN 				0
+		#define TFG_SD_EN	 				0
 		#define TCFG_USB_EXFLASH_UDISK_ENABLE       1   /*外掛FLASH UDISK*/
-		#define TCFG_UDISK_ENABLE			0			/*支持usb盘功能*/
-		
-		#if API_OTG_BIT_ENABLE
-			#define TCFG_OTG_USB_DEV_EN     API_OTG_BIT_ENABLE
-
-			#if API_USBD_BIT_ENABLE			//Enable USB SLAVE MODE
-			#define USB_DEVICE_EN       
-			#endif
-
-			#if API_USBD_BIT_ENABLE && API_USBH_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
-			#elif API_USBD_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
-			#elif API_USBH_BIT_ENABLE
-				#define TCFG_OTG_MODE       OTG_HOST_MODE  | OTG_DET_DP_ONLY
-			#else
-				#define TCFG_OTG_MODE       0
-			#endif
-		#endif
+		#define TCFG_UDISK_ENABLE			1			/*支持usb盘功能*/
 
 
 		#define SW_VERSION                     	0x01
@@ -193,10 +156,28 @@ extern "C" {
 	#endif
 #endif
 
-
-
-#include "emf_config.h"
 #include "hw_board.h"
+#include "emf_config.h"
+
+#if API_OTG_BIT_ENABLE
+	#define TCFG_OTG_USB_DEV_EN     API_OTG_BIT_ENABLE
+	
+	#if API_USBD_BIT_ENABLE			//Enable USB SLAVE MODE
+	#define USB_DEVICE_EN       
+	#endif
+
+	#if API_USBD_BIT_ENABLE && API_USBH_BIT_ENABLE
+		#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
+	#elif API_USBD_BIT_ENABLE
+		#define TCFG_OTG_MODE       OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
+	#elif API_USBH_BIT_ENABLE
+		#define TCFG_OTG_MODE       OTG_HOST_MODE  | OTG_DET_DP_ONLY
+	#else
+		#define TCFG_OTG_MODE       0
+	#endif
+#endif
+
+
 #ifdef __cplusplus
 }
 #endif

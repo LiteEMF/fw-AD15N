@@ -35,6 +35,26 @@
             "group": "build"
         }
         ,{
+            "label": "ac104n_mbox_LiteEMF",
+            "type": "shell",
+            "windows": {
+                "command": ".vscode/winmk.bat ac104n_mbox_LiteEMF"
+            },
+            "command": "make ac104n_mbox_LiteEMF -j`nproc`",
+            "problemMatcher": [],
+            "group": "build"
+        }
+        ,{
+            "label": "clean_ac104n_mbox_LiteEMF",
+            "type": "shell",
+            "windows": {
+                "command": ".vscode/winmk.bat clean_ac104n_mbox_LiteEMF"
+            },
+            "command": "make clean_ac104n_mbox_LiteEMF -j`nproc`",
+            "problemMatcher": [],
+            "group": "build"
+        }
+        ,{
             "label": "ad17n_voice_toy",
             "type": "shell",
             "windows": {

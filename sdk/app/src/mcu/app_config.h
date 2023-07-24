@@ -1,10 +1,13 @@
 #ifndef __APP_CONFIG_H__
 #define __APP_CONFIG_H__
-#include "app_modules.h"
 
 #ifdef LITEEMF_ENABLED
 #include "hw_config.h"
 #endif
+
+#include "app_modules.h"
+
+
 
 
 #define ENABLE_THIS_MOUDLE					1

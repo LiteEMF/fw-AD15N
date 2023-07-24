@@ -1,7 +1,7 @@
 #ifndef _MBOX_CONFIG_H
 #define _MBOX_CONFIG_H
-#include "hw_config.h"
-#endif
+
+
 #include "app_modules.h"
 #include "common/ui/ui_common.h"
 
@@ -138,10 +138,16 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #endif
 
 /*---------USB Configuration---------------*/
+#ifndef TCFG_PC_ENABLE
 #define TCFG_PC_ENABLE						ENABLE  //PC模块使能
+#endif
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE
+#ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
 #define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE  //外掛FLASH UDISK
+#endif
+#ifndef TCFG_UDISK_ENABLE
 #define TCFG_UDISK_ENABLE					ENABLE //U盘模块使能
+#endif
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
 #define TCFG_AOA_ENABLE      				DISABLE
@@ -157,12 +163,12 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #define	USB_DISK_EN        //是否可以读U盘
 #endif
 
-#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
 #include "usb_std_class_def.h"
 #include "usb_common_def.h"
 
+#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
 #undef USB_DEVICE_CLASS_CONFIG
-#define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS|SPEAKER_CLASS|MIC_CLASS|HID_CLASS)  //配置usb从机模式支持的class
+#define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS)  //配置usb从机模式支持的class
 
 #undef TCFG_OTG_MODE
 #define TCFG_OTG_MODE                       (TCFG_OTG_MODE_HOST|TCFG_OTG_MODE_SLAVE|TCFG_OTG_MODE_CHARGE)
