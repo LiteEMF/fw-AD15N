@@ -1,11 +1,8 @@
 #ifndef _MBOX_CONFIG_H
 #define _MBOX_CONFIG_H
-
-#ifdef LITEEMF_ENABLED
 #include "hw_config.h"
 #endif
-
-
+#include "app_modules.h"
 #include "common/ui/ui_common.h"
 
 #define ENABLE								1
@@ -135,55 +132,23 @@ flash厂家联系评估写的频率是否是产品安全范围。
 /*sd 和 flash复用使能*/
 #define SPI_SD_IO_REUSE					0//SPI_FLASH与SD卡模块IO复用使能
 /*---------SD Configuration---------------*/
-#if HAS_SDMMC_EN
-#define TFG_SD_EN						1//ENABLE
-#else
-#define TFG_SD_EN						0//ENABLE
-#endif
 ///<SD卡接口选择
-#if TFG_SD_EN
+#if defined(TFG_SD_EN) && (TFG_SD_EN)
 #define SDMMCA_EN
 #endif
 
 /*---------USB Configuration---------------*/
-#if HAS_USB_EN
 #define TCFG_PC_ENABLE						ENABLE  //PC模块使能
 #define TCFG_USB_MSD_CDROM_ENABLE           DISABLE
-#ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
-#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE   //外掛FLASH UDISK
-#endif
-#ifndef TCFG_UDISK_ENABLE
-#define TCFG_UDISK_ENABLE					DISABLE 	 //U盘模块使能
-#endif
+#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE  //外掛FLASH UDISK
+#define TCFG_UDISK_ENABLE					ENABLE //U盘模块使能
 #define TCFG_HID_HOST_ENABLE				DISABLE
 #define TCFG_ADB_ENABLE      				DISABLE
 #define TCFG_AOA_ENABLE      				DISABLE
 #define TCFG_PUSH_CODE_ENABLE               DISABLE  //该功能需要关闭OTG使能
-
-#else
-
-#define TCFG_PC_ENABLE						DISABLE  //PC模块使能
-#define TCFG_USB_MSD_CDROM_ENABLE           DISABLE  //用于pc工具更新flash数据
-#ifndef TCFG_USB_EXFLASH_UDISK_ENABLE
-#define TCFG_USB_EXFLASH_UDISK_ENABLE       DISABLE   //外掛FLASH UDISK
-#endif
-#ifndef TCFG_UDISK_ENABLE
-#define TCFG_UDISK_ENABLE					DISABLE  //U盘模块使能
-#endif
-#define TCFG_HID_HOST_ENABLE				DISABLE
-#define TCFG_ADB_ENABLE      				DISABLE
-#define TCFG_AOA_ENABLE      				DISABLE
-#define TCFG_PUSH_CODE_ENABLE               DISABLE  //该功能需要关闭OTG使能
-#endif
 
 #define TCFG_USB_PORT_CHARGE                DISABLE
 #define TCFG_USB_DM_MULTIPLEX_WITH_SD_DAT0  DISABLE
-
-
-
-#ifndef TCFG_OTG_USB_DEV_EN
-#define TCFG_OTG_USB_DEV_EN                 BIT(0)//USB0 = BIT(0)  USB1 = BIT(1)
-#endif
 
 #if TCFG_PC_ENABLE
 #define USB_DEVICE_EN       //Enable USB SLAVE MODE
@@ -192,20 +157,18 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #define	USB_DISK_EN        //是否可以读U盘
 #endif
 
+#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
 #include "usb_std_class_def.h"
 #include "usb_common_def.h"
-#if TCFG_PC_ENABLE || TCFG_UDISK_ENABLE
 
 #undef USB_DEVICE_CLASS_CONFIG
-#define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS)  //配置usb从机模式支持的class
+#define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS|SPEAKER_CLASS|MIC_CLASS|HID_CLASS)  //配置usb从机模式支持的class
 
 #undef TCFG_OTG_MODE
-#define TCFG_OTG_MODE                       (TCFG_OTG_MODE_HOST|TCFG_OTG_MODE_SLAVE|TCFG_OTG_MODE_CHARGE|OTG_DET_DP_ONLY)
+#define TCFG_OTG_MODE                       (TCFG_OTG_MODE_HOST|TCFG_OTG_MODE_SLAVE|TCFG_OTG_MODE_CHARGE)
 #else
 #define  USB_DEVICE_CLASS_CONFIG            0
-#ifndef TCFG_OTG_MODE
 #define TCFG_OTG_MODE                       0
-#endif
 #endif
 
 #if TCFG_PUSH_CODE_ENABLE
@@ -215,12 +178,5 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #define TCFG_OTG_MODE                       0
 #endif
 
-/*---------LOUDSPEAKER Configuration---------------*/
-#if (HOWLING_EN || ECHO_EN)
-#define LOUDSPEAKER_EN             			//支持扩音模式
-
-#define USER_HOWLING_CONFIG  				1     //啸叫抑制开关
-#define USER_ECHO_CONFIG     				1     //echo混响开关
-#endif
 
 #endif
