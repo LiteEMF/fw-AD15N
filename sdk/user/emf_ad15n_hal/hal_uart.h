@@ -12,7 +12,7 @@
 
 #ifndef _hal_uart_h
 #define _hal_uart_h
-#include "utils/emf_typedef.h" 
+#include "emf_typedef.h" 
 #include "uart_dev.h"
 
 #ifdef __cplusplus

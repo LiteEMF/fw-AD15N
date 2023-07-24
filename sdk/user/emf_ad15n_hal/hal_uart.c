@@ -147,7 +147,7 @@ bool hal_uart_init(uint8_t id,uint32_t baudrate)
     uart_para.baud = baudrate;
     uart_para.rx_timeout = 4;	//40us (460800 一个字节22us)
     uart_para.isr_cbfun = uart_callback;
-    uart_para.rx_cbuf = rx_buf;
+    uart_para.rx_cbuf = rx_buf[id];
     uart_para.rx_cbuf_size = UART_CBUF_SIZE;            //uart fifo 长度
     uart_para.frame_length = UART_CBUF_SIZE;            //串口收到数据长度到frame_length就会起一次中断
     uart_bus[id] = (uart_bus_t *)uart_dev_open(&uart_para);
