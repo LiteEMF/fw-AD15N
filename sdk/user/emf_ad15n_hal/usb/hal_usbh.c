@@ -17,12 +17,13 @@
 #include  "api/usb/usb_typedef.h"
 #include  "api/usb/host/usbh.h"
 
-#include "dev_mg/device.h"
 #include "asm/usb.h"
 #include "usb/ch9.h"
 #include "usb/usb_phy.h"
 #include "usb_ctrl_transfer.h"
 #include "device_drive.h"
+#include "usb_std_class_def.h"
+#include "dev_mg/device.h"
 #include "gpio.h"
 #include "clock.h"
 #include "wdt.h"
@@ -36,7 +37,6 @@
 /******************************************************************************************************
 **	public Parameters
 *******************************************************************************************************/
-extern const char LRC_TRIM_DISABLE;  //LRC trim 主时钟
 
 /******************************************************************************************************
 **	static Parameters
@@ -48,10 +48,41 @@ static uint8_t ep_dma_buf[USBH_NUM][(USBH_ENDP_NUM-1) * 2 * (64 + 4)];
 static uint8_t* m_ep_pbuffer[USBH_NUM][USBH_ENDP_NUM][2];
 static uint8_t m_target_ep[USBH_NUM][USBH_ENDP_NUM][2];			//数组下标是host_ep
 
-uint8_t pll_cfg_cnt = 0;			//用于pll校准
 /*****************************************************************************************************
 **	static Function
 ******************************************************************************************************/
+
+#if USB_HOST_ASYNC
+static volatile int usb_host_sem[USBH_NUM];
+static int usbh_sem_init(usb_dev usb_id)
+{
+    usb_host_sem[usb_id] = 0;
+    return 0;
+}
+static int usbh_sem_pend(usb_dev usb_id, u32 timeout)
+{
+	#define     OS_TIMEOUT  1
+    timeout = jiffies + timeout;
+    while (usb_host_sem[usb_id] == 0) {
+        if (time_after(jiffies, timeout)) {
+            return OS_TIMEOUT;
+        }
+    }
+    usb_host_sem[usb_id] = 0;
+    return 0;
+}
+static int usbh_sem_post(usb_dev usb_id)
+{
+    usb_host_sem[usb_id] = 1;
+    return 0;
+
+}
+static int usbh_sem_del(usb_dev usb_id)
+{
+    return 0;
+}
+
+#endif
 
 void usb_h_isr(const usb_dev usb_id)
 {
@@ -79,21 +110,21 @@ void usb_h_isr(const usb_dev usb_id)
     }
 
     if (intr_tx & BIT(0)) {
-		usbh_endp_in_event(usb_id,0);
+		// usbh_endp_in_event(usb_id<<4,0);
 		#if USB_HOST_ASYNC
-		usb_sem_post(usb_id);
+		usbh_sem_post(usb_id);
 		#endif
     }
 
     for (int i = 1; i < USBH_ENDP_NUM; i++) {
         if (intr_tx & BIT(i)) {
-			usbh_endp_in_event(usb_id,i | TUSB_DIR_IN_MASK);
+			usbh_endp_out_event(usb_id<<4,m_target_ep[usb_id][i][0]);
         }
     }
 
     for (int i = 1; i < USBH_ENDP_NUM; i++) {
         if (intr_rx & BIT(i)) {
-			usbh_endp_out_event(usb_id,i);
+			usbh_endp_in_event(usb_id<<4, m_target_ep[usb_id][i][1] | TUSB_DIR_IN_MASK);
         }
     }
     __asm__ volatile("csync");
@@ -169,37 +200,6 @@ uint8_t hal_usbh_find_host_ep(uint8_t usb_id, uint8_t ep)
 
 
 
-#if USB_HOST_ASYNC
-static volatile int usb_host_sem[USBH_NUM];
-static int usb_sem_init(usb_dev usb_id)
-{
-    usb_host_sem[usb_id] = 0;
-    return 0;
-}
-static int usb_sem_pend(usb_dev usb_id, u32 timeout)
-{
-	#define     OS_TIMEOUT  1
-    timeout = jiffies + timeout;
-    while (usb_host_sem[usb_id] == 0) {
-        if (time_after(jiffies, timeout)) {
-            return OS_TIMEOUT;
-        }
-    }
-    usb_host_sem[usb_id] = 0;
-    return 0;
-}
-static int usb_sem_post(usb_dev usb_id)
-{
-    usb_host_sem[usb_id] = 1;
-    return 0;
-
-}
-static int usb_sem_del(usb_dev usb_id)
-{
-    return 0;
-}
-
-#endif
 
 static int usb_ctlXfer(uint8_t id, uint8_t mtu, struct ctlXfer *urb)
 {
@@ -262,7 +262,7 @@ static int usb_ctlXfer(uint8_t id, uint8_t mtu, struct ctlXfer *urb)
         }
 
 #if USB_HOST_ASYNC
-        ret = usb_sem_pend(usb_id, 250); //wait isr
+        ret = usbh_sem_pend(usb_id, 250); //wait isr
         if (ret) {
             loge("usb%d_offline\n", usb_id);
             ret = -DEV_ERR_OFFLINE;
@@ -367,85 +367,6 @@ static int usb_control_transfers(uint8_t id, uint8_t mtu, struct ctlXfer *urb)
 **  Function
 ******************************************************************************************************/
 
-/*******************************************************************
-** Parameters:		
-** Returns:	
-** Description:		
-*******************************************************************/
-error_t hal_usbh_set_status(uint8_t id,usb_state_t usb_sta)
-{
-	const usb_dev usb_id = id>>4;
-	const u32 pll_ds = (JL_PLL->CON1 & 0xfff) + 2;
-
-	switch (usb_sta){
-	case TUSB_STA_ATTACHED:
-		pll_cfg_cnt = 0;
-		break;
-	case TUSB_STA_DETACHED:
-		logd_g("usbh TUSB_STA_DETACHED\n");
-		pll_cfg_cnt = 0;
-		usb_otg_resume(usb_id);  //打开usb host之后恢复otg检测
-		usb_sie_disable(usb_id);
-		#if USB_HOST_ASYNC
-		usb_sem_del(usb_id);
-		#endif
-
-		if (!LRC_TRIM_DISABLE) {
-			pll_config(pll_ds);
-			logd_r("set pll offset=%d\n",pll_cfg_cnt);
-		}
-		break;
-	case TUSB_STA_POWERED:
-		logd_g("usbh TUSB_STA_POWERED\n");
-		#if USB_HOST_ASYNC
-		usb_sem_init(usb_id);
-		#endif
-        usb_host_config(usb_id);
-		usb_h_isr_reg(usb_id, IRQ_USB_IP, 0);
-		lrc_trace_trim();
-
-		if (!LRC_TRIM_DISABLE) {
-			wdt_clear();
-			if (usb_otg_online(0) != HOST_MODE) {
-				break;
-			}
-
-			if (pll_cfg_cnt) {			//第一次pll_cfg_cnt = 0, 失败后非0
-				if (pll_cfg_cnt & 0x01) {
-					pll_config(pll_ds + (pll_cfg_cnt >> 1) + 1);
-				} else {
-					pll_config(pll_ds - (pll_cfg_cnt >> 1) - 1);
-				}
-				logd_r("set pll offset=%d\n",pll_cfg_cnt);
-			}
-			pll_cfg_cnt++;
-		}
-		break;
-	case TUSB_STA_DEFAULT:
-		break;
-	case TUSB_STA_ADDRESSING:
-		break;
-	case TUSB_STA_CONFIGURED:
-	case TUSB_STA_SUSPENDED:
-		if (!LRC_TRIM_DISABLE) {
-			if(pll_cfg_cnt) pll_cfg_cnt--;
-			if (pll_cfg_cnt > 0) {	 //枚举成功保存时钟频率
-				if (pll_cfg_cnt & 0x01) {
-					pll_config(pll_ds - ((pll_cfg_cnt >> 1) + 1) - 3);
-				} else {
-					pll_config(pll_ds + (pll_cfg_cnt >> 1) + 3);
-				}
-				logd_r("set pll offset=%d\n",pll_cfg_cnt);
-			}
-		}
-		usb_otg_resume(usb_id);  //打开usb host之后恢复otg检测
-		break;
-	default:
-		break;
-	}	
-
-	return ERROR_SUCCESS;
-}
 
 /*******************************************************************
 ** Parameters:		
@@ -462,7 +383,7 @@ error_t hal_usbh_port_en(uint8_t id,uint8_t en, usb_speed_t* pspeed)
 		usb_set_dma_taddr(usb_id, 0, dma);
 
         usb_sie_enable(usb_id);//enable sie intr
-        usb_mdelay(20);
+        // usb_mdelay(20);
 	}else{
 		usb_sie_close(usb_id);
 	}
@@ -521,12 +442,22 @@ error_t hal_usbh_endp_register(uint8_t id, usb_endp_t *endpp)
     usb_dev usb_id = id>>4;
 
 	endp_dir = endpp->dir? TUSB_DIR_IN_MASK:0;
-	if(endp_dir || endpp->type == TUSB_ENDP_TYPE_ISOCH){	//endp in and iso endp used isr
+	if(endp_dir || (endpp->type == TUSB_ENDP_TYPE_ISOCH)){	//endp in and iso endp used isr
 		isr_en = true;
 	}
 
 	u32 host_ep = usb_get_ep_num(usb_id, endp_dir, endpp->type);
+    if((u32)-1 == host_ep){
+        logd("usbh ep null!\n");
+        return ERROR_FAILE;
+    }
+    
 	ep_buffer = mem_buf_alloc(&usbh_mem[usb_id], endpp->mtu + 4);
+    if(NULL == ep_buffer){
+        logd("usbh mem null!\n");
+        return ERROR_NO_MEM;
+    }
+
 	if(endp_dir){
 		m_target_ep[usb_id][host_ep][1] = endpp->addr;
 		m_ep_pbuffer[usb_id][host_ep][1] = ep_buffer;
@@ -534,7 +465,7 @@ error_t hal_usbh_endp_register(uint8_t id, usb_endp_t *endpp)
 		m_target_ep[usb_id][host_ep][0] = endpp->addr;
 		m_ep_pbuffer[usb_id][host_ep][0] = ep_buffer;
 	}
-	usb_h_ep_config((usb_id), host_ep | endp_dir, endpp->type,isr_en,endpp->interval, ep_buffer, endpp->mtu);
+	usb_h_ep_config(usb_id, host_ep | endp_dir, endpp->type,isr_en,endpp->interval, ep_buffer, endpp->mtu);
 	
 	if(isr_en){
 		usb_h_ep_read_async(usb_id, host_ep, endpp->addr, NULL, 0, endpp->type, 1);
@@ -620,22 +551,28 @@ error_t hal_usbh_driver_init(uint8_t id)
     m_ep_pbuffer[usb_id][0][0] = ep0_dma[usb_id];
     m_ep_pbuffer[usb_id][0][1] = ep0_dma[usb_id];
     mem_buf_init(&usbh_mem[usb_id], ep_dma_buf[usb_id], sizeof(ep_dma_buf[usb_id]), 4);
-	pll_cfg_cnt = 0;			//用于校准
 
+    usb_otg_resume(usb_id);  //打开usb host之后恢复otg检测
+    #if USB_HOST_ASYNC
+    usbh_sem_init(usb_id);
+    #endif
+    usb_host_config(usb_id);
+    usb_h_isr_reg(usb_id, 1, 0);
+	lrc_trace_trim();
+    
 	return ERROR_SUCCESS;
 }
 error_t hal_usbh_driver_deinit(uint8_t id)
 {
     usb_dev usb_id = id>>4;
 	#if USB_HOST_ASYNC
-    usb_sem_post(usb_id);		//拔掉设备时，让读写线程快速释放
+    usbh_sem_post(usb_id);		//拔掉设备时，让读写线程快速释放
 	#endif
-    usb_sie_close(usb_id);
+    usb_sie_disable(usb_id);
 
 	#if USB_HOST_ASYNC
-	usb_sem_del(usb_id);
+	usbh_sem_del(usb_id);
 	#endif
-
 	return ERROR_SUCCESS;
 }
 void hal_usbh_driver_task(uint32_t dt_ms)

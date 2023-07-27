@@ -147,7 +147,7 @@ extern "C" {
 		#define FM_EN						0
 		#define TFG_SD_EN	 				0
 		#define TCFG_USB_EXFLASH_UDISK_ENABLE       1   /*外掛FLASH UDISK*/
-		#define TCFG_UDISK_ENABLE			1			/*支持usb盘功能*/
+		#define TCFG_UDISK_ENABLE			0			/*支持usb盘功能*/
 
 
 		#define SW_VERSION                     	0x01
@@ -162,6 +162,7 @@ extern "C" {
 #if API_OTG_BIT_ENABLE
 	#define TCFG_OTG_USB_DEV_EN     API_OTG_BIT_ENABLE
 	
+	#define TCFG_PC_ENABLE			0
 	#if API_USBD_BIT_ENABLE			//Enable USB SLAVE MODE
 	#define USB_DEVICE_EN       
 	#endif

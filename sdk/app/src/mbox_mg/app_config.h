@@ -170,11 +170,14 @@ flash厂家联系评估写的频率是否是产品安全范围。
 #undef USB_DEVICE_CLASS_CONFIG
 #define  USB_DEVICE_CLASS_CONFIG             (MASSSTORAGE_CLASS)  //配置usb从机模式支持的class
 
-#undef TCFG_OTG_MODE
+#ifndef TCFG_OTG_MODE
 #define TCFG_OTG_MODE                       (TCFG_OTG_MODE_HOST|TCFG_OTG_MODE_SLAVE|TCFG_OTG_MODE_CHARGE)
+#endif
 #else
 #define  USB_DEVICE_CLASS_CONFIG            0
+#ifndef TCFG_OTG_MODE
 #define TCFG_OTG_MODE                       0
+#endif
 #endif
 
 #if TCFG_PUSH_CODE_ENABLE

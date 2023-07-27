@@ -88,6 +88,7 @@ void ap_handle_hotkey(u16 key)
 #if defined LITEEMF_ENABLED && API_OTG_BIT_ENABLE
     case MSG_USB_DISK_OUT:
         usbh_det_event(0, 0);
+        usbh_deinit(0);
 #elif defined USB_DISK_EN
     case MSG_USB_DISK_OUT:
         log_info("udisk out");
@@ -169,8 +170,9 @@ void ap_handle_hotkey(u16 key)
 
 #if defined LITEEMF_ENABLED && API_OTG_BIT_ENABLE
     case MSG_USB_DISK_IN:
+        log_info("udisk in");
+        usbh_init(0);
         usbh_det_event(0, 1);
-
 #elif defined USB_DISK_EN
     case MSG_USB_DISK_IN  :
         log_info("udisk in");
