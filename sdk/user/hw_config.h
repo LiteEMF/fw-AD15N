@@ -168,11 +168,11 @@ extern "C" {
 	#endif
 
 	#if API_USBD_BIT_ENABLE && API_USBH_BIT_ENABLE
-		#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
+		#define TCFG_OTG_MODE       OTG_HOST_MODE | OTG_SLAVE_MODE
 	#elif API_USBD_BIT_ENABLE
-		#define TCFG_OTG_MODE       OTG_SLAVE_MODE  | OTG_DET_DP_ONLY
+		#define TCFG_OTG_MODE       OTG_SLAVE_MODE 
 	#elif API_USBH_BIT_ENABLE
-		#define TCFG_OTG_MODE       OTG_HOST_MODE  | OTG_DET_DP_ONLY
+		#define TCFG_OTG_MODE       OTG_HOST_MODE 
 	#else
 		#define TCFG_OTG_MODE       0
 	#endif

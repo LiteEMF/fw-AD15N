@@ -177,10 +177,11 @@ void usb_host_config(usb_dev usb_id)
 }
 
 
-uint8_t hal_usbh_find_host_ep(uint8_t usb_id, uint8_t ep)
+uint8_t hal_usbh_find_host_ep(uint8_t id, uint8_t ep)
 {
     uint8_t i, host_ep = 0; 
     uint8_t ep_addr = ep & 0X7F;
+    uint8_t usb_id = id >> 4;
     
     for(i=1; i<USBH_ENDP_NUM; i++){
         if(TUSB_DIR_IN_MASK & ep){
@@ -400,7 +401,7 @@ error_t hal_usbh_port_reset(uint8_t id, uint8_t reset_ms)
     usb_dev usb_id = id>>4;
 
 	usb_h_sie_init(usb_id);
-    ret = usb_host_init(usb_id, reset_ms, 200);
+    ret = usb_host_init(usb_id, reset_ms, 250);
 
 	return ret;
 }
@@ -420,7 +421,7 @@ error_t hal_usbh_endp_unregister(uint8_t id, usb_endp_t *endpp)
     usb_dev usb_id = id>>4;
 
 	mem_buf_init(&usbh_mem[usb_id], ep_dma_buf[usb_id], sizeof(ep_dma_buf[usb_id]), 4);
-	host_ep = hal_usbh_find_host_ep(usb_id, endpp->addr | endp_dir);
+	host_ep = hal_usbh_find_host_ep(id, endpp->addr | endp_dir);
 
     if(host_ep){
         if(endpp->dir){
@@ -507,7 +508,8 @@ error_t hal_usbh_in(uint8_t id, usb_endp_t *endpp, uint8_t* buf, uint16_t* plen,
 	int32_t rx_len;
 	usbh_dev_t* pdev = get_usbh_dev(id);
 	uint8_t endp_dir = endpp->dir? TUSB_DIR_IN_MASK:0;
-	uint8_t host_ep = hal_usbh_find_host_ep(usb_id, endpp->addr | endp_dir);
+	uint8_t host_ep = hal_usbh_find_host_ep(id, endpp->addr | endp_dir);
+
 
 	#if USBH_LOOP_ENABLE
 	*plen = usb_h_ep_read(usb_id, host_ep, endpp->mtu, endpp->addr, buf, *plen, endpp->type);
@@ -529,7 +531,7 @@ error_t hal_usbh_out(uint8_t id, usb_endp_t *endpp,uint8_t* buf, uint16_t len)
     usb_dev usb_id = id>>4;
 	usbh_dev_t* pdev = get_usbh_dev(id);
 	uint8_t endp_dir = endpp->dir? TUSB_DIR_IN_MASK:0;
-	uint8_t host_ep = hal_usbh_find_host_ep(usb_id, endpp->addr | endp_dir);
+	uint8_t host_ep = hal_usbh_find_host_ep(id, endpp->addr | endp_dir);
 
 	tx_len = usb_h_ep_write(usb_id, host_ep, endpp->mtu, endpp->addr, buf, len, endpp->type);
 	//tx_len = usb_h_ep_write_async(usb_id, host_ep, endpp->mtu, endpp->addr, buf, len, endpp->type, !len);

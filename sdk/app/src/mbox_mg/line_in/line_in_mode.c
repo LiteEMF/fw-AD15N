@@ -24,6 +24,11 @@
 #include "sdmmc/sd_host_api.h"
 #include "adc_drv.h"
 
+#ifdef LITEEMF_ENABLED
+#include "app/emf.h"
+#include "api/api_log.h"
+#endif
+
 #define LOG_TAG_CONST       NORM
 #define LOG_TAG             "[normal]"
 #include "log.h"
@@ -212,6 +217,10 @@ void Line_in_mode_loop(void)
     while (1) {
         msg = app_get_msg();
         bsp_loop();
+
+        #ifdef LITEEMF_ENABLED
+        emf_handler(0);
+        #endif
 
         switch (msg) {
         case MSG_MUTE:
